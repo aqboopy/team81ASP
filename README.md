@@ -2,7 +2,7 @@
 
 Routes to create for the website
 - Home page
-- Product Market Page
+- Generalized product Market Page
 - Product Listing Page
 - Product Market page x 3 (More specified pages, if you see in our prototypes from the midterm report)
 - Cart
