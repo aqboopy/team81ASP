@@ -30,11 +30,11 @@ db.serialize(() => {
 
 // Import routes
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
+const loginRouter = require("./routes/login");
 
 // Use routes
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/login", loginRouter);
 
 // Start the server
 app.listen(PORT, () => {

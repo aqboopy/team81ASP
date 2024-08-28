@@ -6,16 +6,9 @@
 		<title><%= title %></title>
 		<link rel="stylesheet" href="/css/styles.css" />
 	</head>
-	<body>
+	<body class="flex flex-col min-h-screen">
 		<%- include('partials/header') %>
-		<!-- Include header -->
-
-		<main>
-			<%- body %>
-			<!-- Dynamic content will be injected here -->
-		</main>
-
+		<main class="flex-grow"><%- body %></main>
 		<%- include('partials/footer') %>
-		<!-- Include footer -->
 	</body>
 </html>
