@@ -6,10 +6,6 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
-const bodyParser = require("body-parser");
-const session = require("express-session");
-const nodemailer = require("nodemailer");
-const crypto = require("crypto");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 app.use(expressLayouts);
 app.set("layout", "layout"); // Default layout file
 
-// Use body-parser
+
 // Use body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -30,14 +26,6 @@ app.use(
 		saveUninitialized: true,
 		cookie: { secure: false }, // Set to true in production with HTTPS
 	})
-);
-app.use(
-  session({
-    secret: "team81asp", // Replace with environment variable in production
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }, // Set to true in production with HTTPS
-  })
 );
 
 // Set EJS as the template engine
@@ -72,12 +60,12 @@ global.db = new sqlite3.Database(
             global.db.run(
               "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)"
 							
-						);
-						global.db.run(
-							`CREATE TABLE IF NOT EXISTS products 
-							(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, category TEXT, price INTEGER,
-							description TEXT, image BLOB, image_type TEXT, date_listed TIMESTAMP, user_id INTEGER,
-							FOREIGN KEY (user_id) REFERENCES users(id))`
+			);
+			global.db.run(
+				`CREATE TABLE IF NOT EXISTS products 
+				(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, category TEXT, price INTEGER,
+				description TEXT, image BLOB, image_type TEXT, date_listed TIMESTAMP, user_id INTEGER,
+				FOREIGN KEY (user_id) REFERENCES users(id))`
             );
             
             global.db.run(
@@ -105,7 +93,7 @@ const loginRouter = require("./routes/login");
 const registerRouter = require("./routes/register");
 const retrievePasswordRouter = require("./routes/retrievePassword");
 const likesRouter = require("./routes/likes");
-const marketRouter = require("./routes/market");
+const sellRouter = require("./routes/sell");
 const profileRouter = require("./routes/profile");
 
 // Use routes
@@ -114,8 +102,9 @@ app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/retrievePassword", retrievePasswordRouter);
 app.use("/likes", likesRouter);
-app.use("/market",marketRouter);
+app.use("/sell",sellRouter);
 app.use("/profile",profileRouter);
+
 // Routes for category pages
 app.get("/household", (req, res) => {
   res.render("household", { title: "Household Items" });
