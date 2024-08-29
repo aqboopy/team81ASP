@@ -6,6 +6,10 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,9 +19,18 @@ app.use(expressLayouts);
 app.set("layout", "layout"); // Default layout file
 
 // Use body-parser
+// Use body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Use express-session
+app.use(
+	session({
+		secret: "team81asp", // Replace with environment variable in production
+		resave: false,
+		saveUninitialized: true,
+		cookie: { secure: false }, // Set to true in production with HTTPS
+	})
+);
 app.use(
 	session({
 		secret: "team81asp", // Replace with environment variable in production
@@ -36,6 +49,23 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
 // Database setup
+global.db = new sqlite3.Database(
+	path.join(__dirname, "database", "app.db"),
+	(err) => {
+		if (err) {
+			console.error("Database connection failed:", err.message);
+		} else {
+			console.log("Connected to the SQLite database.");
+
+			// Enable foreign key constraints
+			global.db.run("PRAGMA foreign_keys = ON", (err) => {
+				if (err) {
+					console.error(
+						"Failed to enable foreign key constraints:",
+						err.message
+					);
+				} else {
+					console.log("Foreign key constraints enabled.");
 global.db = new sqlite3.Database(
 	path.join(__dirname, "database", "app.db"),
 	(err) => {
