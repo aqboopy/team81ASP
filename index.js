@@ -69,12 +69,12 @@ global.db = new sqlite3.Database(
 							"CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)"
 						);
 			      //Added by Rachel Chin
-			global.db.run(
-							`CREATE TABLE IF NOT EXISTS products 
-				(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, category TEXT, price INTEGER,
-				description TEXT, image BLOB, image_type TEXT, date_listed TIMESTAMP, user_id INTEGER,
-				FOREIGN KEY (user_id) REFERENCES users(id))`
-      );//End
+            global.db.run(
+                    `CREATE TABLE IF NOT EXISTS products 
+              (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, category TEXT, price INTEGER,
+              description TEXT, image BLOB, image_type TEXT, date_listed TIMESTAMP, user_id INTEGER,
+              FOREIGN KEY (user_id) REFERENCES users(id))`
+            );//End
             
             global.db.run(
               "CREATE TABLE IF NOT EXISTS likes (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, item TEXT, FOREIGN KEY (user_id) REFERENCES users(id))"
@@ -119,6 +119,7 @@ app.use("/sell",sellRouter);
 app.use("/profile",profileRouter);
 app.use("/market",marketRouter);
 //End
+app.use("/logout",logoutRouter);
 
 // Routes for each category pages
 //COMMENTED THIS OUT SO THE SPECIFIC CATEGORY PAGE IS MORE DYNAMIC AND NOT HARD CODED (Rachel)

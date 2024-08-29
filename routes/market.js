@@ -9,8 +9,8 @@ const express = require('express');
 const router = express.Router();
 
 router.get("/",(req,res)=>{
-    var essentialProducts, householdProducts,electronicProducts, otherProducts;
-    let essentialQuery = "SELECT * FROM products WHERE category='Essentials'";
+    var essentialProducts, householdProducts,electronicProducts;
+    let essentialQuery = "SELECT * FROM products WHERE category='Essentials' LIMIT 3";
     global.db.all(essentialQuery,(err,result)=>{
         if(err){
             console.log(err);
@@ -27,7 +27,7 @@ router.get("/",(req,res)=>{
                 }
             });
         }
-        let householdQuery = "SELECT * FROM products WHERE category='Household Items'";
+        let householdQuery = "SELECT * FROM products WHERE category='Household Items' LIMIT 3";
         global.db.all(householdQuery,(err2,result2)=>{
             if(err2){
                 console.log(err2);
@@ -44,7 +44,7 @@ router.get("/",(req,res)=>{
                     }
                 });
             }
-            let electronicQuery = "SELECT * FROM products WHERE category='Electronics'";
+            let electronicQuery = "SELECT * FROM products WHERE category='Electronics' LIMIT 3";
             global.db.all(electronicQuery,(err3,result3)=>{
                 if(err3){
                     console.log(err3);
