@@ -35,7 +35,6 @@ app.use((req, res, next) => {
 	next();
 });
 
-
 // Set EJS as the template engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -68,22 +67,22 @@ global.db = new sqlite3.Database(
 						global.db.run(
 							"CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)"
 						);
-			      //Added by Rachel Chin
-            global.db.run(
-                    `CREATE TABLE IF NOT EXISTS products 
+						//Added by Rachel Chin
+						global.db.run(
+							`CREATE TABLE IF NOT EXISTS products 
               (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, category TEXT, price INTEGER,
               description TEXT, image BLOB, image_type TEXT, date_listed TIMESTAMP, user_id INTEGER,
               FOREIGN KEY (user_id) REFERENCES users(id))`
-            );//End
-            
-            global.db.run(
-              "CREATE TABLE IF NOT EXISTS likes (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, item TEXT, FOREIGN KEY (user_id) REFERENCES users(id))"
-            );
-          });
-        }
-      });
-    }
-  }
+						); //End
+
+						global.db.run(
+							"CREATE TABLE IF NOT EXISTS likes (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, item TEXT, FOREIGN KEY (user_id) REFERENCES users(id))"
+						);
+					});
+				}
+			});
+		}
+	}
 );
 
 // Set up nodemailer transporter (using Gmail as an example)
@@ -115,11 +114,11 @@ app.use("/likes", likesRouter);
 //Added by Rachel Chin
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
-app.use("/sell",sellRouter);
-app.use("/profile",profileRouter);
-app.use("/market",marketRouter);
+app.use("/sell", sellRouter);
+app.use("/profile", profileRouter);
+app.use("/market", marketRouter);
 //End
-app.use("/logout",logoutRouter);
+app.use("/logout", logoutRouter);
 
 // Routes for each category pages
 //COMMENTED THIS OUT SO THE SPECIFIC CATEGORY PAGE IS MORE DYNAMIC AND NOT HARD CODED (Rachel)
@@ -136,8 +135,6 @@ app.use("/logout",logoutRouter);
 // app.get("/electronics", (req, res) => {
 //   res.render("electronics", { title: "Electronics" });
 // });
-
-
 
 // Start the server
 app.listen(PORT, () => {
