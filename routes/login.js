@@ -1,3 +1,9 @@
+/*
+author: Rachel Chin
+filename: login.js
+description: This is to handle the request and response for user login
+*/
+
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");

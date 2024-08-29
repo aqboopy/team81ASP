@@ -1,3 +1,8 @@
+/*
+author: Rachel Chin
+filename: sell.js
+description: This is to handle the request and response for sell product
+*/
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');

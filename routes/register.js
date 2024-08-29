@@ -1,3 +1,9 @@
+/*
+author: Rachel Chin
+filename: register.js
+description: This is to handle the request and response for register user
+*/
+
 const express = require('express');
 const router = express.Router();
 const {check, validationResult} = require('express-validator');

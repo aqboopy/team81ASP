@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 app.use(expressLayouts);
 app.set("layout", "layout"); // Default layout file
 
+//Added by Rachel Chin
 // Use body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -26,12 +27,14 @@ app.use(
 		cookie: { secure: false }, // Set to true in production with HTTPS
 	})
 );
+//End
 
 // Middleware to make userdata available in all views
 app.use((req, res, next) => {
 	res.locals.userdata = req.session.userdata;
 	next();
 });
+
 
 // Set EJS as the template engine
 app.set("view engine", "ejs");
@@ -65,21 +68,22 @@ global.db = new sqlite3.Database(
 						global.db.run(
 							"CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)"
 						);
-						global.db.run(
+			      //Added by Rachel Chin
+			global.db.run(
 							`CREATE TABLE IF NOT EXISTS products 
 				(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, category TEXT, price INTEGER,
 				description TEXT, image BLOB, image_type TEXT, date_listed TIMESTAMP, user_id INTEGER,
 				FOREIGN KEY (user_id) REFERENCES users(id))`
-						);
-
-						global.db.run(
-							"CREATE TABLE IF NOT EXISTS likes (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, item TEXT, FOREIGN KEY (user_id) REFERENCES users(id))"
-						);
-					});
-				}
-			});
-		}
-	}
+      );//End
+            
+            global.db.run(
+              "CREATE TABLE IF NOT EXISTS likes (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, item TEXT, FOREIGN KEY (user_id) REFERENCES users(id))"
+            );
+          });
+        }
+      });
+    }
+  }
 );
 
 // Set up nodemailer transporter (using Gmail as an example)
@@ -93,38 +97,46 @@ const transporter = nodemailer.createTransport({
 
 // Import routes
 const indexRouter = require("./routes/index");
-const loginRouter = require("./routes/login");
-const registerRouter = require("./routes/register");
 const retrievePasswordRouter = require("./routes/retrievePassword");
 const likesRouter = require("./routes/likes");
+//Added by Rachel Chin
+const loginRouter = require("./routes/login");
+const registerRouter = require("./routes/register");
 const sellRouter = require("./routes/sell");
 const profileRouter = require("./routes/profile");
 const marketRouter = require("./routes/market");
+//End
 const logoutRouter = require("./routes/logout");
 
 // Use routes
 app.use("/", indexRouter);
-app.use("/login", loginRouter);
-app.use("/register", registerRouter);
 app.use("/retrievePassword", retrievePasswordRouter);
 app.use("/likes", likesRouter);
-app.use("/sell", sellRouter);
-app.use("/profile", profileRouter);
-app.use("/market", marketRouter);
-app.use("/logout", logoutRouter);
+//Added by Rachel Chin
+app.use("/login", loginRouter);
+app.use("/register", registerRouter);
+app.use("/sell",sellRouter);
+app.use("/profile",profileRouter);
+app.use("/market",marketRouter);
+//End
 
 // Routes for each category pages
-app.get("/household", (req, res) => {
-	res.render("household", { title: "Household Items" });
-});
+//COMMENTED THIS OUT SO THE SPECIFIC CATEGORY PAGE IS MORE DYNAMIC AND NOT HARD CODED (Rachel)
+//ALL DONE WITHIN MARKETROUTER
 
-app.get("/essentials", (req, res) => {
-	res.render("essentials", { title: "Essentials" });
-});
+// app.get("/household", (req, res) => {
+//   res.render("household", { title: "Household Items" });
+// });
 
-app.get("/electronics", (req, res) => {
-	res.render("electronics", { title: "Electronics" });
-});
+// app.get("/essentials", (req, res) => {
+//   res.render("essentials", { title: "Essentials" });
+// });
+
+// app.get("/electronics", (req, res) => {
+//   res.render("electronics", { title: "Electronics" });
+// });
+
+
 
 // Start the server
 app.listen(PORT, () => {

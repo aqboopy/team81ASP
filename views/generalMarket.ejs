@@ -1,3 +1,9 @@
+<!-- 
+author: Rachel Chin, Nurleena Muhammad Hilmi
+filename: generalMarket.ejs
+description: This is the view page to display all products, sorted by category. 
+-->
+
 <!-- This should be our General Market Page -->
 <div class="flex justify-center my-8">
 	<input
@@ -17,22 +23,20 @@
 <!-- First row -->
 <h2 class="text-2xl font-bold">Essentials</h2>
 <div class="flex justify-around my-8">
-	<div class="w-1/3 bg-gray-200 p-4 text-center">
-		<div class="h-32 bg-gray-400 mb-4"></div>
-		<p>Image 1</p>
-	</div>
-	<div class="w-1/3 bg-gray-200 p-4 text-center">
-		<div class="h-32 bg-gray-400 mb-4"></div>
-		<p>Image 2</p>
-	</div>
-	<div class="w-1/3 bg-gray-200 p-4 text-center">
-		<div class="h-32 bg-gray-400 mb-4"></div>
-		<p>Image 3</p>
-	</div>
+    <% if(essentialdata){
+        essentialdata.forEach(function(product){ %>
+
+            <div class="w-1/3 bg-gray-200 p-4 text-center">
+		        <!-- <div class="h-32 bg-gray-400 mb-4"></div> -->
+		        <img src="data:<%= product.image_type %>;base64,<%= product.image %>" style="width: 300px;height: 300px;">
+	        </div>
+                
+    <%   })  
+    }%>
 </div>
 
 <div class="text-center my-8">
-	<a href="/essentials">
+	<a href="/market/Essentials">
 		<button class="bg-green-500 text-white py-2 px-4 rounded-full">
 			View Listings >>
 		</button>
@@ -42,22 +46,18 @@
 <!-- Second row -->
 <h2 class="text-2xl font-bold">Household Items</h2>
 <div class="flex justify-around my-8">
-	<div class="w-1/3 bg-gray-200 p-4 text-center">
-		<div class="h-32 bg-gray-400 mb-4"></div>
-		<p>Image 1</p>
-	</div>
-	<div class="w-1/3 bg-gray-200 p-4 text-center">
-		<div class="h-32 bg-gray-400 mb-4"></div>
-		<p>Image 2</p>
-	</div>
-	<div class="w-1/3 bg-gray-200 p-4 text-center">
-		<div class="h-32 bg-gray-400 mb-4"></div>
-		<p>Image 3</p>
-	</div>
+    <% if(householddata){
+        householddata.forEach(function(product){ %>
+            <div class="w-1/3 bg-gray-200 p-4 text-center">
+		        <!-- <div class="h-32 bg-gray-400 mb-4"></div> -->
+		        <img src="data:<%= product.image_type %>;base64,<%= product.image %>" style="width: 300px;height: 300px;">
+	        </div>
+    <%  })  
+    }%>
 </div>
 
 <div class="text-center my-8">
-	<a href="/household">
+	<a href="/market/Household Items">
 		<button class="bg-green-500 text-white py-2 px-4 rounded-full">
 			View Listings >>
 		</button>
@@ -67,22 +67,18 @@
 <!-- Third Row -->
 <h2 class="text-2xl font-bold">Electronics</h2>
 <div class="flex justify-around my-8">
-	<div class="w-1/3 bg-gray-200 p-4 text-center">
-		<div class="h-32 bg-gray-400 mb-4"></div>
-		<p>Image 1</p>
-	</div>
-	<div class="w-1/3 bg-gray-200 p-4 text-center">
-		<div class="h-32 bg-gray-400 mb-4"></div>
-		<p>Image 2</p>
-	</div>
-	<div class="w-1/3 bg-gray-200 p-4 text-center">
-		<div class="h-32 bg-gray-400 mb-4"></div>
-		<p>Image 3</p>
-	</div>
+    <% if(electronicdata){
+        electronicdata.forEach(function(product){ %>
+            <div class="w-1/3 bg-gray-200 p-4 text-center">
+		        <!-- <div class="h-32 bg-gray-400 mb-4"></div> -->
+		        <img src="data:<%= product.image_type %>;base64,<%= product.image %>" style="width: 300px;height: 300px;">
+	        </div>
+    <%  })  
+    }%>
 </div>
 
 <div class="text-center my-8">
-	<a href="/electronics">
+	<a href="/market/Electronics">
 		<button class="bg-green-500 text-white py-2 px-4 rounded-full">
 			View Listings >>
 		</button>
