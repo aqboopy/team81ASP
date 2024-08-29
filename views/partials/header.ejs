@@ -23,11 +23,23 @@
 						>Cart</a
 					>
 				</li>
+				<% if (userdata) { %>
+				<li>
+					<a
+						href="/profile"
+						class="text-gray-700 hover:text-gray-900"
+					>
+						<%=userdata.name %>
+					</a>
+				</li>
+
+				<% } else { %>
 				<li>
 					<a href="/login" class="text-gray-700 hover:text-gray-900"
 						>Sign In or Register</a
 					>
 				</li>
+				<% } %>
 			</ul>
 		</nav>
 	</div>
