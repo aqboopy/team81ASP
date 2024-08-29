@@ -1,0 +1,19 @@
+<h1 class="text-3xl font-bold">Liked items<h1>
+
+<% if (likes.length > 0) { %>
+    <ul>
+        <% likes.forEach(like => { %>
+            <li>
+                <%= like.item %>
+                <form action="/likes/unlike" method="POST" style="display:inline;">
+                    <input type="hidden" name="likeId" value="<%= like.id %>">
+                    <button type="submit">Remove</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>No likes found.</p>
+<% } %>
+
+<a href="/household">Back to Household Items</a>

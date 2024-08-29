@@ -1,0 +1,38 @@
+<!-- Updated Household Items section in household.ejs -->
+<h1 class="text-3xl font-bold">Household Items</h1>
+
+<% const items = [
+    "Household Item 1", "Household Item 2", "Household Item 3",
+    "Household Item 4", "Household Item 5", "Household Item 6",
+    "Household Item 7", "Household Item 8", "Household Item 9"
+]; %>
+
+<% for (let i = 0; i < items.length; i += 3) { %>
+    <div class="flex justify-around my-8">
+        <% for (let j = i; j < i + 3 && j < items.length; j++) { %>
+            <div class="w-1/3 bg-gray-200 p-4 text-center">
+                <div class="h-32 bg-gray-400 mb-4"></div>
+                <p class="flex items-center justify-between mb-2">
+                    <span><%= items[j] %></span>
+                    <span class="icon-container">
+                        <form action="/likes/like" method="POST" style="display:inline;">
+                            <input type="hidden" name="item" value="<%= items[j] %>">
+                            <button type="submit" class="icon-circle"><i class="fas fa-heart"></i></button>
+                        </form>                        
+                        <form action="/unlike" method="POST" style="display: inline;">
+                            <input type="hidden" name="item" value="<%= items[j] %>">
+                            <button type="submit" class="icon-circle"><i class="fas fa-shopping-cart"></i></button>
+                        </form>
+                    </span>
+                </p>
+                <button class="more-details mt-2">More Details</button>
+            </div>
+        <% } %>
+    </div>
+<% } %>
+
+<div class="text-center my-8">
+    <button class="view-more bg-green-500 text-white py-2 px-4 rounded-full">
+        View More
+    </button>
+</div>

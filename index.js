@@ -19,12 +19,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Use express-session
 app.use(
-	session({
-		secret: "team81asp", // Replace with environment variable in production
-		resave: false,
-		saveUninitialized: true,
-		cookie: { secure: false }, // Set to true in production with HTTPS
-	})
+  session({
+    secret: "team81asp", // Replace with environment variable in production
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // Set to true in production with HTTPS
+  })
 );
 
 // Set EJS as the template engine
@@ -37,57 +37,76 @@ app.use(express.urlencoded({ extended: true }));
 
 // Database setup
 global.db = new sqlite3.Database(
-	path.join(__dirname, "database", "app.db"),
-	(err) => {
-		if (err) {
-			console.error("Database connection failed:", err.message);
-		} else {
-			console.log("Connected to the SQLite database.");
+  path.join(__dirname, "database", "app.db"),
+  (err) => {
+    if (err) {
+      console.error("Database connection failed:", err.message);
+    } else {
+      console.log("Connected to the SQLite database.");
 
-			// Enable foreign key constraints
-			global.db.run("PRAGMA foreign_keys = ON", (err) => {
-				if (err) {
-					console.error(
-						"Failed to enable foreign key constraints:",
-						err.message
-					);
-				} else {
-					console.log("Foreign key constraints enabled.");
+      // Enable foreign key constraints
+      global.db.run("PRAGMA foreign_keys = ON", (err) => {
+        if (err) {
+          console.error(
+            "Failed to enable foreign key constraints:",
+            err.message
+          );
+        } else {
+          console.log("Foreign key constraints enabled.");
 
-					// Sample table creation
-					global.db.serialize(() => {
-						global.db.run(
-							"CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)"
-						);
-					});
-				}
-			});
-		}
-	}
+          // Create tables if they do not exist
+          global.db.serialize(() => {
+            global.db.run(
+              "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)"
+            );
+            
+            global.db.run(
+              "CREATE TABLE IF NOT EXISTS likes (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, item TEXT, FOREIGN KEY (user_id) REFERENCES users(id))"
+            );
+          });
+        }
+      });
+    }
+  }
 );
 
 // Set up nodemailer transporter (using Gmail as an example)
 const transporter = nodemailer.createTransport({
-	service: "Gmail",
-	auth: {
-		user: "aspteam81@gmail.com",
-		pass: "AspT@81?",
-	},
+  service: "Gmail",
+  auth: {
+    user: "aspteam81@gmail.com",
+    pass: "AspT@81?",
+  },
 });
 
 // Import routes
 const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
 const registerRouter = require("./routes/register");
-const retrievePasswordRouter = require("./routes/retrievePassword"); // Add the retrievePassword route
+const retrievePasswordRouter = require("./routes/retrievePassword");
+const likesRouter = require("./routes/likes");
 
 // Use routes
 app.use("/", indexRouter);
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
-app.use("/retrievePassword", retrievePasswordRouter); // Use the retrievePassword route
+app.use("/retrievePassword", retrievePasswordRouter);
+app.use("/likes", likesRouter);
+
+// Routes for category pages
+app.get("/household", (req, res) => {
+  res.render("household", { title: "Household Items" });
+});
+
+app.get("/clothes", (req, res) => {
+  res.render("clothes", { title: "Clothes" });
+});
+
+app.get("/electronics", (req, res) => {
+  res.render("electronics", { title: "Electronics" });
+});
 
 // Start the server
 app.listen(PORT, () => {
-	console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
