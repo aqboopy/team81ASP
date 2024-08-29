@@ -56,7 +56,7 @@ router.post("/",upload.single('image'), sellValidationRules(),(req,res)=>{
         const mimeType = req.file.mimetype;//image type
 
         let insertQuery = "INSERT INTO products (name,category,price,description,image,image_type,date_listed,user_id) VALUES (?,?,?,?,?,?,CURRENT_TIMESTAMP,?)";
-        global.db.run(insertQuery,[productname,category,price,description,imageBuffer,mimeType,req.session.userdata?.user_id],(err,result)=>{
+        global.db.run(insertQuery,[productname,category,price,description,imageBuffer,mimeType,req.session.userdata?.id],(err,result)=>{
             if(err){
                 console.log(err);
             }

@@ -65,7 +65,7 @@ global.db = new sqlite3.Database(
 					// Create tables if they do not exist
 					global.db.serialize(() => {
 						global.db.run(
-							"CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)"
+							"CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT)"
 						);
 						//Added by Rachel Chin
 						global.db.run(

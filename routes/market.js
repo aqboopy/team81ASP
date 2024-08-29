@@ -104,7 +104,7 @@ router.get("/:category", (req, res) => {
 //render product listing page for product
 router.get("/listing/:id", (req, res) => {
 	const productId = req.params.id;
-	const sqlQuery = "SELECT * FROM products WHERE id = ?";
+	const sqlQuery = "SELECT products.*, users.username FROM products JOIN users ON products.user_id = users.id WHERE products.id = ?;";
 
 	global.db.get(sqlQuery, [productId], (err, product) => {
 		if (err) {
@@ -115,7 +115,6 @@ router.get("/listing/:id", (req, res) => {
 		if (!product) {
 			return res.status(404).send("Product not found.");
 		}
-
 		// Convert BLOB to Base64
 		if (product.image) {
 			product.image = Buffer.from(product.image).toString("base64");

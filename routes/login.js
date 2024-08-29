@@ -59,7 +59,7 @@ router.post("/", loginValidationRules(), (req, res) => {
 		// Store user information in session
 		req.session.userdata = {
 			id: result.id,
-			name: result.name, // Assuming your users table has a 'name' column
+			username: result.username, // Assuming your users table has a 'name' column
 			email: result.email,
 		};
 

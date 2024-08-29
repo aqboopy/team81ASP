@@ -37,7 +37,7 @@ router.post("/",registerValidationRules(),(req,res)=>{
         res.render("register",{alert,title: "Register"});
     }
     else{
-        let insertQuery = "INSERT INTO users (name,email,password) VALUES (?,?,?)";
+        let insertQuery = "INSERT INTO users (username,email,password) VALUES (?,?,?)";
         global.db.run(insertQuery,[username,email,password],(err,result)=>{
             if(err){
                 console.log(err);
