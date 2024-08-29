@@ -95,6 +95,7 @@ const retrievePasswordRouter = require("./routes/retrievePassword");
 const likesRouter = require("./routes/likes");
 const sellRouter = require("./routes/sell");
 const profileRouter = require("./routes/profile");
+const marketRouter = require("./routes/market");
 
 // Use routes
 app.use("/", indexRouter);
@@ -104,14 +105,15 @@ app.use("/retrievePassword", retrievePasswordRouter);
 app.use("/likes", likesRouter);
 app.use("/sell",sellRouter);
 app.use("/profile",profileRouter);
+app.use("/market",marketRouter);
 
-// Routes for category pages
+// Routes for each category pages
 app.get("/household", (req, res) => {
   res.render("household", { title: "Household Items" });
 });
 
-app.get("/clothes", (req, res) => {
-  res.render("clothes", { title: "Clothes" });
+app.get("/essentials", (req, res) => {
+  res.render("essentials", { title: "Essentials" });
 });
 
 app.get("/electronics", (req, res) => {
