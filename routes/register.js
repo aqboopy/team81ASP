@@ -42,7 +42,7 @@ router.post("/",registerValidationRules(),(req,res)=>{
                     if(err2){
                         console.log(err2);
                     }
-                    req.session.userData = result2;
+                    req.session.userdata = result2;
                     res.redirect("/");
                 });
             }         

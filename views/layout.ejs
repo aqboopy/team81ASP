@@ -6,9 +6,14 @@
 		<title><%= title %></title>
 		<link rel="stylesheet" href="/css/styles.css" />
 	</head>
-	<body class="flex flex-col min-h-screen">
-		<%- include('partials/header') %>
-		<main class="flex-grow"><%- body %></main>
-		<%- include('partials/footer') %>
+	<body class="flex flex-col h-screen">
+		<!-- Sticky Header -->
+		<header class="bg-yellow-200"><%- include('partials/header') %></header>
+
+		<!-- Scrollable Content -->
+		<main class="flex-grow overflow-y-auto"><%- body %></main>
+
+		<!-- Sticky Footer -->
+		<footer class="bg-yellow-200"><%- include('partials/footer') %></footer>
 	</body>
 </html>
