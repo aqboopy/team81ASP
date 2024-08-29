@@ -1,0 +1,76 @@
+.more-details {
+    background: none;
+    border: none;
+    color: #007BFF;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.more-details:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.more-details::after {
+    content: " →";
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.more-details:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Styling for the "View More" button */
+button.view-more {
+    background-color: #38a169; /* Default green color */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 9999px;
+    transition: background-color 0.3s ease, text-decoration 0.3s ease;
+    text-decoration: none;
+}
+
+/* Hover effect: darken background and add underline */
+button.view-more:hover {
+    background-color: #2f855a; /* Darker green on hover */
+    text-decoration: underline;
+}
+
+
+.icon-container {
+    display: flex;
+    gap: 10px;  /* Adjust gap between icons */
+}
+
+.icon-circle {
+    display: flex;
+    align-items: center;  /* Center the icon vertically */
+    justify-content: center;  /* Center the icon horizontally */
+    width: 30px;  /* Size of the circle */
+    height: 30px;  /* Size of the circle */
+    border-radius: 50%;  /* Make it a circle */
+    background-color: #f0f0f0;  /* Light gray background */
+    color: #333;  /* Dark gray icon color */
+    font-size: 16px;  /* Size of the icon */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.icon-circle:hover {
+    background-color: #38a169;  /* Darker green on hover */
+    color: white;  /* White icon color on hover */
+}
+
+.icon-circle i {
+    margin: 0;  /* Remove any default margin */
+    line-height: 1;  /* Ensure no additional spacing */
+}
+
+
+
+
