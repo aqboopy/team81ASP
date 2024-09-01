@@ -37,6 +37,14 @@
 			>
 				Add to Cart
 			</button>
+
+			<button 
+				class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors"
+				id="likeButton"
+				data-product-id="<%= product.id %>"
+			>
+				Like
+			</button>
 		</div>
 	</div>
 
@@ -115,3 +123,53 @@
 		</div>
 	</div>
 </div>
+
+<!-- added by nurleena -->
+<!-- JavaScript to handle the like button click -->
+<script>
+    document.getElementById('likeButton').addEventListener('click', function() {
+        const productId = this.getAttribute('data-product-id');
+
+        fetch('/market/like/' + productId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            // Check if the response is JSON
+            if (response.headers.get('content-type')?.includes('application/json')) {
+                return response.json();
+            } else {
+                throw new Error('Not JSON response');
+            }
+        })
+        .then(data => {
+            if (data && data.error) {
+                // Handle error responses
+                if (data.error === "Sign in before liking.") {
+                    alert(data.error);
+                    window.location.href = '/login'; // Redirect to login page
+                } else {
+                    alert(data.error);
+                }
+            } else if (data && data.message) {
+                // Handle success responses
+                alert(data.message);
+            } else {
+                alert('Unexpected response format.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while liking the product.');
+        });
+    });
+</script>
+
+
+
+
+

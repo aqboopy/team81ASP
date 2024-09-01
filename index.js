@@ -75,15 +75,43 @@ global.db = new sqlite3.Database(
               FOREIGN KEY (user_id) REFERENCES users(id))`
 						); //End
 
+						// Creating the likes table
+                        global.db.run(
+                            `CREATE TABLE IF NOT EXISTS likes (
+                                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                                user_id INTEGER, 
+                                product_id INTEGER, 
+                                FOREIGN KEY (user_id) REFERENCES users(id), 
+                                FOREIGN KEY (product_id) REFERENCES products(id),
+                                UNIQUE(user_id, product_id) -- Ensure a user can only like a product once
+                            )`
+                        );
+
 						global.db.run(
-							"CREATE TABLE IF NOT EXISTS likes (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, item TEXT, FOREIGN KEY (user_id) REFERENCES users(id))"
+							`CREATE TABLE IF NOT EXISTS likes_temp 
+							(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, product_id INTEGER, 
+							FOREIGN KEY (user_id) REFERENCES users(id), 
+							FOREIGN KEY (product_id) REFERENCES products(id))`
 						);
+
+						global.db.run(
+							`INSERT INTO likes_temp (id, user_id)
+							 SELECT id, user_id FROM likes`
+						);
+						
+						global.db.run("DROP TABLE likes");
+						global.db.run("ALTER TABLE likes_temp RENAME TO likes");
+
+
+						
 					});
 				}
 			});
 		}
 	}
 );
+
+
 
 // Set up nodemailer transporter (using Gmail as an example)
 const transporter = nodemailer.createTransport({
@@ -97,7 +125,6 @@ const transporter = nodemailer.createTransport({
 // Import routes
 const indexRouter = require("./routes/index");
 const retrievePasswordRouter = require("./routes/retrievePassword");
-const likesRouter = require("./routes/likes");
 //Added by Rachel Chin
 const loginRouter = require("./routes/login");
 const registerRouter = require("./routes/register");
@@ -106,11 +133,14 @@ const profileRouter = require("./routes/profile");
 const marketRouter = require("./routes/market");
 //End
 const logoutRouter = require("./routes/logout");
+// added by Nurleena Muhammad Hilmi
+const likeRouter = require("./routes/likes");
+//end
+
 
 // Use routes
 app.use("/", indexRouter);
 app.use("/retrievePassword", retrievePasswordRouter);
-app.use("/likes", likesRouter);
 //Added by Rachel Chin
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
@@ -119,22 +149,9 @@ app.use("/profile", profileRouter);
 app.use("/market", marketRouter);
 //End
 app.use("/logout", logoutRouter);
-
-// Routes for each category pages
-//COMMENTED THIS OUT SO THE SPECIFIC CATEGORY PAGE IS MORE DYNAMIC AND NOT HARD CODED (Rachel)
-//ALL DONE WITHIN MARKETROUTER
-
-// app.get("/household", (req, res) => {
-//   res.render("household", { title: "Household Items" });
-// });
-
-// app.get("/essentials", (req, res) => {
-//   res.render("essentials", { title: "Essentials" });
-// });
-
-// app.get("/electronics", (req, res) => {
-//   res.render("electronics", { title: "Electronics" });
-// });
+// added by Nurleena Muhammad Hilmi
+app.use("/likes", likeRouter);
+//end
 
 // Start the server
 app.listen(PORT, () => {
