@@ -1,0 +1,69 @@
+<!-- 
+author: Rachel Chin
+filename: register.ejs
+description: This is the view page for user to register an account. 
+-->
+
+<!-- Register Page -->
+<div class="flex items-center justify-center mt-10">
+	<div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+		<h1 class="text-2xl font-bold mb-6 text-center">Register</h1>
+
+		<a
+			href="/login"
+			class="text-blue-500 hover:text-blue-700 underline text-center block mb-4"
+		>
+			Back to Login
+		</a>
+
+		<% if (typeof alert != 'undefined') { %> <%
+		alert.forEach(function(error) { %>
+		<div
+			class="alert alert-warning alert-dismissible fade show"
+			role="alert"
+		>
+			<%= error.msg %>
+		</div>
+		<% }) %> <% } %>
+
+		<form action="/register" method="POST" class="space-y-4">
+			<div>
+				<label for="username" class="block text-gray-700">Name:</label>
+				<input
+					type="text"
+					name="username"
+					id="username"
+					class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+				/>
+			</div>
+
+			<div>
+				<label for="email" class="block text-gray-700">Email:</label>
+				<input
+					type="email"
+					name="email"
+					id="email"
+					class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+				/>
+			</div>
+
+			<div>
+				<label for="password" class="block text-gray-700"
+					>Password:</label
+				>
+				<input
+					type="password"
+					name="password"
+					id="password"
+					class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+				/>
+			</div>
+
+			<input
+				type="submit"
+				value="Create Account"
+				class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
+			/>
+		</form>
+	</div>
+</div>

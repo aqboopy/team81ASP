@@ -1,0 +1,123 @@
+<!-- Search Bar -->
+<div class="flex justify-center my-8">
+	<input
+		type="text"
+		placeholder="Search"
+		class="border border-gray-300 p-2 rounded-l-md"
+	/>
+	<button class="bg-blue-500 text-white p-2 rounded-r-md">Go!</button>
+</div>
+
+<!-- Carousel -->
+<div class="container mx-auto my-8">
+	<h1 class="text-center text-3xl font-bold mb-6">Featured Products</h1>
+	<div class="relative w-full overflow-hidden">
+		<div
+			id="carousel"
+			class="flex transition-transform duration-700 ease-in-out"
+		>
+			<% products.forEach((product, index) => { %>
+			<div class="w-full flex-shrink-0">
+				<img
+					src="data:<%= product.image_type %>;base64,<%= product.image %>"
+					alt="<%= product.name %>"
+					class="w-full h-64 object-cover"
+				/>
+				<div
+					class="absolute bottom-0 bg-black bg-opacity-50 text-white text-center w-full p-2"
+				>
+					<h5 class="text-lg"><%= product.name %></h5>
+				</div>
+			</div>
+			<% }) %>
+		</div>
+		<!-- Carousel controls -->
+		<button
+			id="prev"
+			class="absolute left-0 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full"
+		>
+			&#10094;
+		</button>
+		<button
+			id="next"
+			class="absolute right-0 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full"
+		>
+			&#10095;
+		</button>
+	</div>
+</div>
+
+<!-- Auto-scroll script -->
+<script>
+	const carousel = document.getElementById("carousel");
+	const prevButton = document.getElementById("prev");
+	const nextButton = document.getElementById("next");
+
+	let currentIndex = 0;
+	const totalSlides = carousel.children.length;
+
+	function updateCarousel() {
+		carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+	}
+
+	nextButton.addEventListener("click", () => {
+		currentIndex = (currentIndex + 1) % totalSlides;
+		updateCarousel();
+	});
+
+	prevButton.addEventListener("click", () => {
+		currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+		updateCarousel();
+	});
+
+	// Auto-scroll functionality
+	setInterval(() => {
+		currentIndex = (currentIndex + 1) % totalSlides;
+		updateCarousel();
+	}, 3000); // Change slides every 3 seconds
+</script>
+
+<!-- View Listings Button -->
+<div class="text-center my-8">
+	<a href="/market">
+		<button class="bg-green-500 text-white py-2 px-4 rounded-full">
+			View Listings >>
+		</button>
+	</a>
+	
+</div>
+
+<!-- About Us Section -->
+<section class="text-center my-12">
+	<h2 class="text-2xl font-bold">About Us</h2>
+	<p class="mt-4 text-gray-600">
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua.
+	</p>
+</section>
+
+<!-- Our Customers Section -->
+<section class="text-center my-12">
+	<h2 class="text-2xl font-bold">Our Customers</h2>
+	<div class="flex justify-around mt-8">
+		<div class="w-1/2">
+			<h3 class="text-xl font-semibold">Average Household Income</h3>
+			<div class="bg-gray-200 h-48 mt-4 flex items-center justify-center">
+				<p class="text-gray-500">Chart Here</p>
+			</div>
+		</div>
+		<div class="w-1/2">
+			<h3 class="text-xl font-semibold">Reviews</h3>
+			<div class="mt-4">
+				<div class="p-4 bg-gray-100 rounded mb-4">
+					<p class="font-bold">Person A</p>
+					<p class="text-gray-600">Person description</p>
+				</div>
+				<div class="p-4 bg-gray-100 rounded">
+					<p class="font-bold">Person B</p>
+					<p class="text-gray-600">Person description</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
