@@ -1,123 +1,61 @@
-<!-- views/cart.ejs -->
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= title %></title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="max-w-7xl mx-auto p-6">
-      <h1 class="text-4xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
+<div class="max-w-7xl mx-auto p-6">
+    <h1 class="text-4xl font-bold text-gray-800 mb-6">Your Cart</h1>
 
-      <% if (cartItems.length > 0) { %>
-      <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-        <thead>
-          <tr>
-            <th class="px-6 py-4">Product</th>
-            <th class="px-6 py-4">Price</th>
-            <th class="px-6 py-4">Quantity</th>
-            <th class="px-6 py-4">Total</th>
-            <th class="px-6 py-4">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% cartItems.forEach(item => { %>
-          <tr class="border-t">
-            <td class="px-6 py-4"><%= item.name %></td>
-            <td class="px-6 py-4">$<%= item.price %></td>
-            <td class="px-6 py-4">
-              <input
-                type="number"
-                value="<%= item.quantity %>"
-                min="1"
-                class="quantity-input w-16 text-center border rounded"
-                data-product-id="<%= item.id %>"
-              />
-            </td>
-            <td class="px-6 py-4">
-              $<%= (item.price * item.quantity).toFixed(2) %>
-            </td>
-            <td class="px-6 py-4">
-              <button
-                class="remove-item bg-red-500 text-white px-3 py-1 rounded"
-                data-product-id="<%= item.id %>"
-              >
-                Remove
-              </button>
-            </td>
-          </tr>
-          <% }); %>
-        </tbody>
-      </table>
-
-      <div class="mt-8">
-        <h2 class="text-2xl font-bold text-gray-800">
-          Total: $<%= cartItems.reduce((acc, item) => acc + item.price *
-          item.quantity, 0).toFixed(2) %>
-        </h2>
-        <button
-          class="mt-4 bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600 transition-colors"
-        >
-          Proceed to Checkout
-        </button>
-      </div>
-      <% } else { %>
-      <p class="text-xl text-gray-700">Your cart is empty.</p>
-      <% } %>
+    <div class="space-y-6">
+        <% cartItems.forEach(item => { %>
+        <div class="flex items-center border-b border-gray-300 pb-4 mb-4">
+            <div class="flex-none w-1/4">
+                <img
+                    src="data:<%= item.image_type %>;base64,<%= item.image %>"
+                    alt="<%= item.name %>"
+                    class="w-full h-auto object-cover rounded-lg"
+                />
+            </div>
+            <div class="flex-1 ml-4">
+                <h2 class="text-2xl font-semibold text-gray-800"><%= item.name %></h2>
+                <p class="text-gray-600 mb-2">Quantity: <%= item.quantity %></p>
+                <p class="text-gray-700">$<%= item.price %></p>
+                <button
+                    class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors mt-4"
+                    data-product-id="<%= item.id %>"
+                    id="removeFromCartButton"
+                >
+                    Remove from Cart
+                </button>
+            </div>
+        </div>
+        <% }) %>
     </div>
+</div>
 
-    <script>
-      document.querySelectorAll(".quantity-input").forEach((input) => {
-        input.addEventListener("change", function () {
-          const productId = this.dataset.productId;
-          const newQuantity = this.value;
+<script>
+    document.querySelectorAll('#removeFromCartButton').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
 
-          fetch("/cart/update", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ productId, quantity: newQuantity }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.success) {
-                location.reload(); // Reload the page to reflect changes
-              } else {
-                alert("Failed to update cart");
-              }
+            fetch('/market/cart/remove/' + productId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin'
             })
-            .catch((error) => console.error("Error:", error));
-        });
-      });
-
-      document.querySelectorAll(".remove-item").forEach((button) => {
-        button.addEventListener("click", function () {
-          const productId = this.dataset.productId;
-
-          fetch("/cart/remove", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ productId }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.success) {
-                location.reload(); // Reload the page to reflect changes
-              } else {
-                alert("Failed to remove item");
-              }
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.error) {
+                    alert(data.error);
+                } else if (data && data.message) {
+                    alert(data.message);
+                    location.reload(); // Reload to reflect changes
+                } else {
+                    alert('Unexpected response format.');
+                }
             })
-            .catch((error) => console.error("Error:", error));
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while removing the product from the cart.');
+            });
         });
-      });
-    </script>
-  </body>
-</html>
+    });
+</script>
