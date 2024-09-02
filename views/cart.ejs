@@ -1,0 +1,61 @@
+<div class="max-w-7xl mx-auto p-6">
+    <h1 class="text-4xl font-bold text-gray-800 mb-6">Your Cart</h1>
+
+    <div class="space-y-6">
+        <% cartItems.forEach(item => { %>
+        <div class="flex items-center border-b border-gray-300 pb-4 mb-4">
+            <div class="flex-none w-1/4">
+                <img
+                    src="data:<%= item.image_type %>;base64,<%= item.image %>"
+                    alt="<%= item.name %>"
+                    class="w-full h-auto object-cover rounded-lg"
+                />
+            </div>
+            <div class="flex-1 ml-4">
+                <h2 class="text-2xl font-semibold text-gray-800"><%= item.name %></h2>
+                <p class="text-gray-600 mb-2">Quantity: <%= item.quantity %></p>
+                <p class="text-gray-700">$<%= item.price %></p>
+                <button
+                    class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors mt-4"
+                    data-product-id="<%= item.id %>"
+                    id="removeFromCartButton"
+                >
+                    Remove from Cart
+                </button>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('#removeFromCartButton').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+
+            fetch('/market/cart/remove/' + productId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.error) {
+                    alert(data.error);
+                } else if (data && data.message) {
+                    alert(data.message);
+                    location.reload(); // Reload to reflect changes
+                } else {
+                    alert('Unexpected response format.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while removing the product from the cart.');
+            });
+        });
+    });
+</script>

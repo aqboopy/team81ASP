@@ -1,76 +1,75 @@
-.more-details {
-    background: none;
-    border: none;
-    color: #007BFF;
-    cursor: pointer;
-    font-size: 13px;
-    text-decoration: none;
-    transition: all 0.3s ease;
+.image-container {
     position: relative;
+    width: 100%;
+    padding-top: 100%; /* Adjust padding-top to control aspect ratio (e.g., 75% for 4:3) */
+    overflow: hidden;
+    border-radius: 0.5rem; /* Matches .rounded-lg */
+}
+.image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Adjusts image to cover container */
 }
 
-.more-details:hover {
-    text-decoration: underline;
-    color: #0056b3;
+.product-container {
+    position: relative;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.more-details::after {
-    content: " →";
-    opacity: 0;
-    transform: translateX(-10px);
-    transition: all 0.3s ease;
-}
-
-.more-details:hover::after {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* Styling for the "View More" button */
-button.view-more {
-    background-color: #38a169; /* Default green color */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 9999px;
-    transition: background-color 0.3s ease, text-decoration 0.3s ease;
+.view-details {
+    display: inline-block;
+    color: #1d4ed8; /* Adjust to your desired color */
     text-decoration: none;
 }
-
-/* Hover effect: darken background and add underline */
-button.view-more:hover {
-    background-color: #2f855a; /* Darker green on hover */
+.view-details:hover {
     text-decoration: underline;
 }
 
+.unlike-button {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: #2563eb; /* Adjust to your desired color */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.unlike-button:hover {
+    background-color: #1d4ed8; /* Adjust to your desired color */
+}
 
-.icon-container {
+/* Grid Container */
+.grid-container {
     display: flex;
-    gap: 10px;  /* Adjust gap between icons */
+    flex-wrap: wrap;
+    gap: 1.5rem; /* Adjust gap between items */
 }
 
-.icon-circle {
-    display: flex;
-    align-items: center;  /* Center the icon vertically */
-    justify-content: center;  /* Center the icon horizontally */
-    width: 30px;  /* Size of the circle */
-    height: 30px;  /* Size of the circle */
-    border-radius: 50%;  /* Make it a circle */
-    background-color: #f0f0f0;  /* Light gray background */
-    color: #333;  /* Dark gray icon color */
-    font-size: 16px;  /* Size of the icon */
-    transition: background-color 0.3s ease, color 0.3s ease;
+.grid-item {
+    flex: 1 1 calc(33.333% - 1.5rem); /* Adjust width and gap here */
+    box-sizing: border-box;
+    max-width: calc(33.333% - 1.5rem); /* Ensure items fit within container */
 }
 
-.icon-circle:hover {
-    background-color: #38a169;  /* Darker green on hover */
-    color: white;  /* White icon color on hover */
+@media (max-width: 768px) {
+    .grid-item {
+        flex: 1 1 calc(50% - 1.5rem); /* Adjust for smaller screens */
+        max-width: calc(50% - 1.5rem);
+    }
 }
 
-.icon-circle i {
-    margin: 0;  /* Remove any default margin */
-    line-height: 1;  /* Ensure no additional spacing */
+@media (max-width: 480px) {
+    .grid-item {
+        flex: 1 1 100%; /* Adjust for very small screens */
+        max-width: 100%;
+    }
 }
-
-
-
-
