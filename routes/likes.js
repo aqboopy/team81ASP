@@ -18,30 +18,16 @@ router.get('/', authMiddleware, (req, res) => {
     }
 
     // Query to get likes for the user
-    global.db.all(`
-        SELECT products.id, products.name, products.price, products.description, products.image, products.image_type 
-        FROM likes 
-        JOIN products ON likes.product_id = products.id 
-        WHERE likes.user_id = ?
-    `, [userId], (err, rows) => {
+    global.db.all('SELECT products.id, products.name, products.price, products.description, products.image, products.image_type FROM likes JOIN products ON likes.product_id = products.id WHERE likes.user_id = ?', [userId], (err, rows) => {
         if (err) {
             console.error('Failed to retrieve likes:', err.message);
             res.status(500).send('Internal Server Error');
             return;
         }
-
-        // Convert BLOB data to Base64 for each liked product
-        rows.forEach(like => {
-            if (like.image) {
-                like.image = Buffer.from(like.image).toString('base64');
-            }
-        });
-
         // Render likes page with the likes data
         res.render('likes', { title: 'My Likes', likes: rows });
     });
 });
-
 
 // Route to handle adding a like
 router.post('/like', (req, res) => {
@@ -66,23 +52,19 @@ router.post('/like', (req, res) => {
 });
 
 // Route to handle removing a like
-router.post('/unlike/:productId', authMiddleware, (req, res) => {
-    const productId = req.params.productId;
-    const userId = req.session.userdata.id;
+router.post('/unlike', (req, res) => {
+    const likeId = req.body.likeId;
 
     // Delete like from the database
-    global.db.run('DELETE FROM likes WHERE user_id = ? AND product_id = ?', [userId, productId], function(err) {
+    global.db.run('DELETE FROM likes WHERE id = ?', [likeId], (err) => {
         if (err) {
             console.error('Failed to remove like:', err.message);
-            return res.status(500).send('Internal Server Error');
+            res.status(500).send('Internal Server Error');
+            return;
         }
-
-        // Redirect to the likes page or send a success response
-        res.redirect('/likes');
+        // Redirect back to the page or send a success response
+        res.redirect('back');
     });
 });
-
-
-
 
 module.exports = router;

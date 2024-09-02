@@ -34,8 +34,6 @@
 			<p class="text-gray-600 mb-6"><%= product.description %></p>
 			<button
 				class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors"
-				id="addToCartButton"
-				data-product-id="<%= product.id %>"
 			>
 				Add to Cart
 			</button>
@@ -171,42 +169,7 @@
     });
 </script>
 
-<!-- JavaScript to handle the add-to-cart button click -->
-<script>
-    document.getElementById('addToCartButton').addEventListener('click', function() {
-        const productId = this.getAttribute('data-product-id');
-        const quantity = 1; // Default quantity
 
-        fetch('/cart/add/' + productId, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({ quantity: quantity }),
-            credentials: 'same-origin'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                // Handle errors
-                alert(data.error);
-            } else if (data.message) {
-                // Handle success
-                if (data.message === "Product quantity updated in cart!") {
-                    alert("Product already added to cart. Quantity updated.");
-                } else {
-                    alert("Product added to cart successfully!");
-                }
-            } else {
-                alert('Unexpected response format.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while adding the product to the cart.');
-        });
-    });
-</script>
 
-<!-- end -->
+
+
