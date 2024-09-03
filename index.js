@@ -35,6 +35,9 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.use(express.json());
+
+
 // Set EJS as the template engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -166,6 +169,7 @@ app.use("/logout", logoutRouter);
 app.use("/likes", likeRouter);
 app.use("/cart", cartRouter);
 //end
+
 
 // Start the server
 app.listen(PORT, () => {

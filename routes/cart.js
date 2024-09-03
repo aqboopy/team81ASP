@@ -1,3 +1,7 @@
+// author: nurleena muhammad hilmi
+// filename: cart.js
+// description: 
+
 const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
@@ -93,16 +97,23 @@ router.get('/', authMiddleware, (req, res) => {
             }
         });
 
-        // Pass the update status as a query parameter if it exists
+        // Calculate total price
+        const totalPrice = cartItems.reduce((total, item) => {
+            return total + (item.price * item.quantity);
+        }, 0);
+
+        // Pass the update status and total price to the template
         const updateStatus = req.query.update || '';
 
         res.render('cart', {
             title: 'Your Cart',
             cartItems: cartItems,
-            updateStatus: updateStatus
+            updateStatus: updateStatus,
+            totalPrice: totalPrice 
         });
     });
 });
+
 
 
 // Route to handle updating the quantity of a product in the cart
