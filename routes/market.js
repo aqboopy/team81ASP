@@ -162,7 +162,40 @@ router.post('/like/:productId', authMiddleware, (req, res) => {
         });
     });
 	
+});router.post('/like/:productId', authMiddleware, (req, res) => {
+    const productId = req.params.productId;
+    const userId = req.session.userdata.id;
+
+    // Check if the user is authenticated
+    if (!userId) {
+        return res.status(401).json({ message: "Sign in before liking." });
+    }
+
+    const checkLikeQuery = "SELECT * FROM likes WHERE user_id = ? AND product_id = ?";
+    
+    global.db.get(checkLikeQuery, [userId, productId], (err, row) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ message: "Internal server error." });
+        }
+
+        if (row) {
+            return res.status(400).json({ message: "You have already liked this product." });
+        }
+
+        const insertLikeQuery = "INSERT INTO likes (user_id, product_id) VALUES (?, ?)";
+        
+        global.db.run(insertLikeQuery, [userId, productId], function(err) {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ message: "Internal server error." });
+            }
+            res.status(200).json({ message: "Product liked successfully!" });
+        });
+    });
+	
 });
+
 
 router.get('/likes', authMiddleware, (req, res) => {
     const userId = req.session.userdata.id;

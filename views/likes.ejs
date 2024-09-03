@@ -1,21 +1,37 @@
-<!-- 
-author: nurleena muhammad hilmi
-filename: likes.ejs
-description:  
--->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Likes page</title>
-    <link rel="stylesheet" href="./public/product.css">
+    <title>Likes Page</title>
+    <link rel="stylesheet" href="/public/product.css">
+    <style>
+        .notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+            display: none;
+            font-size: 16px;
+        }
+        .notification.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .notification.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <div class="max-w-7xl mx-auto p-6">
         <h1 class="text-4xl font-bold text-gray-800 mb-8"><%= title %></h1>
+
+        <!-- Notification Container -->
+        <div id="notification" class="notification"></div>
 
         <% if (likes.length > 0) { %>
             <div class="grid-container">
@@ -50,5 +66,29 @@ description:
             <p class="text-gray-700 text-lg">You haven't liked any products yet.</p>
         <% } %>
     </div>
+
+    <script>
+        // Function to display notifications
+        function showNotification(message, type) {
+            const notificationElement = document.getElementById('notification');
+            notificationElement.textContent = message;
+            notificationElement.className = `notification ${type}`;
+            notificationElement.style.display = 'block';
+
+            // Hide the notification after 3 seconds
+            setTimeout(() => {
+                notificationElement.style.display = 'none';
+            }, 3000);
+        }
+
+        // Display notification if there is a message in the query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        const type = urlParams.get('type');
+
+        if (message) {
+            showNotification(message, type);
+        }
+    </script>
 </body>
 </html>

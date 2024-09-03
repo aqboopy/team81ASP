@@ -43,46 +43,21 @@ router.get('/', authMiddleware, (req, res) => {
 });
 
 
-// Route to handle adding a like
-router.post('/like', (req, res) => {
-    const userId = req.session.userdata && req.session.userdata.id;
-    const productId = req.body.productId;
-
-    if (!userId) {
-        // If userId is undefined, send an error response
-        return res.status(401).json({ error: 'Sign in before liking.' });
-    }
-
-    // Insert like into the database
-    global.db.run('INSERT INTO likes (user_id, product_id) VALUES (?, ?)', [userId, productId], (err) => {
-        if (err) {
-            console.error('Failed to add like:', err.message);
-            res.status(500).send('Internal Server Error');
-            return;
-        }
-        // Redirect back to the page or send a success response
-        res.redirect('back');
-    });
-});
 
 // Route to handle removing a like
 router.post('/unlike/:productId', authMiddleware, (req, res) => {
     const productId = req.params.productId;
     const userId = req.session.userdata.id;
 
-    // Delete like from the database
     global.db.run('DELETE FROM likes WHERE user_id = ? AND product_id = ?', [userId, productId], function(err) {
         if (err) {
             console.error('Failed to remove like:', err.message);
             return res.status(500).send('Internal Server Error');
         }
 
-        // Redirect to the likes page or send a success response
-        res.redirect('/likes');
+        res.redirect('/likes?message=Product successfully removed from likes&type=success');
     });
 });
-
-
 
 
 module.exports = router;
