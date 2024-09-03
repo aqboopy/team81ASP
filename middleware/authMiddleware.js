@@ -6,3 +6,4 @@ module.exports = function (req, res, next) {
     // User is not authenticated
     res.status(401).json({ error: "Sign in before liking." });
 };
+

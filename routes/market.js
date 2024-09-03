@@ -1,5 +1,5 @@
 /*
-author: Rachel Chin
+author: Rachel Chin, Nurleena
 filename: market.js
 description: This is to handle the request and response for all
 product market related things

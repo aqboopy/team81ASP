@@ -47,20 +47,27 @@ router.post('/add/:productId', authMiddleware, (req, res) => {
 
 
 // Route to handle removing a product from the cart
-router.post('/remove/:productId', authMiddleware, (req, res) => {
-    const productId = req.params.productId;
+router.post('/remove/:id', authMiddleware, (req, res) => {
     const userId = req.session.userdata.id;
+    const productId = req.params.id;
 
-    const deleteCartQuery = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
+    const removeQuery = `
+        DELETE FROM cart
+        WHERE user_id = ? AND product_id = ?
+    `;
 
-    global.db.run(deleteCartQuery, [userId, productId], function(err) {
+    global.db.run(removeQuery, [userId, productId], (err) => {
         if (err) {
             console.error(err.message);
-            return res.status(500).json({ message: "Internal server error." });
+            return res.status(500).send("Internal server error.");
         }
-        res.status(200).json({ message: "Product removed from cart successfully!" });
+
+        // Redirect to cart page with a success message
+        res.redirect('/cart?update=remove-success');
     });
 });
+
+
 
 // Route to display the user's cart
 router.get('/', authMiddleware, (req, res) => {
@@ -86,11 +93,43 @@ router.get('/', authMiddleware, (req, res) => {
             }
         });
 
+        // Pass the update status as a query parameter if it exists
+        const updateStatus = req.query.update || '';
+
         res.render('cart', {
             title: 'Your Cart',
-            cartItems: cartItems
+            cartItems: cartItems,
+            updateStatus: updateStatus
         });
     });
 });
+
+
+// Route to handle updating the quantity of a product in the cart
+router.post('/update/:productId', authMiddleware, (req, res) => {
+    const productId = req.params.productId;
+    const userId = req.session.userdata.id;
+    const quantity = parseInt(req.body.quantity, 10);
+
+    // Ensure quantity is a positive number
+    if (isNaN(quantity) || quantity < 1) {
+        return res.status(400).send("Invalid quantity.");
+    }
+
+    const updateCartQuery = "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
+
+    global.db.run(updateCartQuery, [quantity, userId, productId], function(err) {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).send("Internal server error.");
+        }
+        // Redirect with a query parameter indicating success
+        res.redirect('/cart?update=success');
+    });
+});
+
+
+
+
 
 module.exports = router;

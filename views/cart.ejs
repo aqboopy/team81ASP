@@ -1,6 +1,20 @@
 <div class="max-w-7xl mx-auto p-6">
     <h1 class="text-4xl font-bold text-gray-800 mb-6">Your Cart</h1>
 
+    <!-- Notification for successful quantity update -->
+    <% if (updateStatus === 'success') { %>
+        <div id="successMessage" class="bg-green-500 text-white p-4 rounded-lg mb-6">
+            Quantity has been updated successfully!
+        </div>
+    <% } %>
+
+    <!-- Notification for successful removal -->
+    <% if (updateStatus === 'remove-success') { %>
+        <div id="successMessage" class="bg-green-500 text-white p-4 rounded-lg mb-6">
+            Product has been removed from the cart successfully!
+        </div>
+    <% } %>
+
     <div class="space-y-6">
         <% cartItems.forEach(item => { %>
         <div class="flex items-center border-b border-gray-300 pb-4 mb-4">
@@ -13,20 +27,40 @@
             </div>
             <div class="flex-1 ml-4">
                 <h2 class="text-2xl font-semibold text-gray-800"><%= item.name %></h2>
-                <p class="text-gray-600 mb-2">Quantity: <%= item.quantity %></p>
                 <p class="text-gray-700">$<%= item.price %></p>
-                <button
-                    class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors mt-4"
-                    data-product-id="<%= item.id %>"
-                    id="removeFromCartButton"
-                >
-                    Remove from Cart
-                </button>
+                
+                <!-- Form to update quantity -->
+                <form action="/cart/update/<%= item.id %>" method="POST" class="flex items-center space-x-4 mt-4">
+                    <input
+                        type="number"
+                        name="quantity"
+                        value="<%= item.quantity %>"
+                        min="1"
+                        class="border rounded px-2 py-1 w-24"
+                    />
+                    <button
+                        type="submit"
+                        class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors "
+                    >
+                        Update Quantity
+                    </button>
+                </form>
+                
+                <!-- Button to remove item from cart -->
+                <form action="/cart/remove/<%= item.id %>" method="post" class="inline">
+                    <button
+                        type="submit"
+                        class="underline text-red-500 hover:text-red-600 transition-colors mt-4"
+                    >
+                        Remove from Cart
+                    </button>
+                </form>
             </div>
         </div>
         <% }) %>
     </div>
 </div>
+
 
 <script>
     document.querySelectorAll('#removeFromCartButton').forEach(button => {
@@ -58,4 +92,65 @@
             });
         });
     });
+
+    document.querySelectorAll('#updateQuantityButton').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            const quantity = document.getElementById('quantity-' + productId).value;
+
+            fetch('/market/cart/update/' + productId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({ quantity: quantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.error) {
+                    alert(data.error);
+                } else if (data && data.message) {
+                    alert(data.message);
+                    location.reload(); // Reload to reflect changes
+                } else {
+                    alert('Unexpected response format.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the quantity.');
+            });
+        });
+    });
+
+    //Notif for change of quantity
+    document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000); // Hide after 3 seconds
+            }
+        });
+
+    //Notif for removal of item
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const updateStatus = urlParams.get('update');
+
+        if (updateStatus === 'remove-success') {
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                successMessage.style.display = 'block';
+
+                // Hide the message after 3 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            }
+        }
+    });
+
 </script>
