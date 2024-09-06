@@ -1,0 +1,63 @@
+<div class="max-w-4xl mx-auto mt-10">
+	<h1 class="text-3xl font-bold text-center mb-6">Report Issue</h1>
+	<% if (typeof successMessage != 'undefined') { %>
+	<div class="bg-green-100 text-green-800 p-4 rounded mb-4">
+		<%= successMessage %>
+	</div>
+	<% } %>
+	<form action="/report" method="POST" class="space-y-6">
+		<!-- Issue Type -->
+		<div>
+			<label for="issue" class="block text-gray-700">Issue</label>
+			<select name="issue" id="issue" class="border rounded w-full p-2">
+				<option value="Report Seller">Report Seller</option>
+				<option value="Report Product">Report Product</option>
+			</select>
+		</div>
+
+		<!-- Seller Name (only appears if 'Report Seller' is selected) -->
+		<div>
+			<label for="sellerName" class="block text-gray-700"
+				>Seller Name</label
+			>
+			<input
+				type="text"
+				name="sellerName"
+				id="sellerName"
+				class="border w-full p-2 rounded"
+			/>
+		</div>
+
+		<!-- Description -->
+		<div>
+			<label for="description" class="block text-gray-700"
+				>Description</label
+			>
+			<textarea
+				name="description"
+				id="description"
+				rows="5"
+				class="border w-full p-2 rounded"
+			></textarea>
+		</div>
+
+		<!-- Image Upload (optional, not fully implemented) -->
+		<div>
+			<label for="image" class="block text-gray-700">Image</label>
+			<input
+				type="file"
+				name="image"
+				id="image"
+				class="border w-full p-2 rounded"
+			/>
+		</div>
+
+		<!-- Submit Button -->
+		<button
+			type="submit"
+			class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+		>
+			Report
+		</button>
+	</form>
+</div>

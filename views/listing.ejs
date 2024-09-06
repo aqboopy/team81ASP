@@ -40,7 +40,7 @@
 				Add to Cart
 			</button>
 
-			<button 
+			<button
 				class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors"
 				id="likeButton"
 				data-product-id="<%= product.id %>"
@@ -52,7 +52,14 @@
 
 	<!-- Seller Section -->
 	<div class="border-t border-gray-300 pt-8 mt-8">
-		<h3 class="text-2xl font-bold text-gray-800 mb-4"><%= product.username %></h3>
+		<h3 class="text-2xl font-bold text-gray-800 mb-4">
+			<a
+				href="/profile/<%= product.user_id %>"
+				class="text-blue-500 hover:text-blue-700"
+			>
+				<%= product.username %>
+			</a>
+		</h3>
 		<div class="flex items-center mb-6">
 			<div class="ml-4">
 				<p class="text-gray-700">Seller Description/Info</p>
@@ -77,27 +84,43 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Report Button (only if logged-in user is not the seller) -->
+		<% if (sessionUser && product.user_id !== sessionUser.id) { %>
+		<div class="flex justify-end">
+			<a
+				href="/report"
+				class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition-colors"
+			>
+				Report
+			</a>
+		</div>
+		<% } %>
 	</div>
 
 	<!-- Reviews Section -->
 	<div class="border-t border-gray-300 pt-8 mt-8">
 		<h3 class="text-2xl font-bold text-gray-800 mb-4">Reviews</h3>
+
+		<% if (!reviews) { %>
+		<!-- No reviews message -->
+		<p class="text-gray-500">No reviews yet.</p>
+		<% } else { %>
 		<div class="space-y-6">
-			<!-- Example Review -->
+			<% reviews.forEach(function(review) { %>
 			<div class="flex items-start">
-				<div class="flex-none"></div>
 				<div class="ml-4 flex-1">
 					<div class="flex items-center">
 						<h4 class="text-lg font-semibold text-gray-800">
-							Buyer A
+							<%= review.reviewer_name %>
 						</h4>
 						<span class="ml-4 text-gray-600 text-sm"
-							>Purchased on 27/08/2024</span
+							>Purchased on <%= review.date %></span
 						>
 					</div>
 					<div class="flex mt-2">
-						<!-- Star Rating (Static example) -->
-						<% for (let i = 0; i < 5; i++) { %>
+						<!-- Star Rating -->
+						<% for (let i = 0; i < review.rating; i++) { %>
 						<svg
 							class="w-5 h-5 text-yellow-500 fill-current"
 							xmlns="http://www.w3.org/2000/svg"
@@ -114,99 +137,110 @@
 						</svg>
 						<% } %>
 					</div>
-					<p class="mt-2 text-gray-700">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Sed do eiusmod tempor incididunt ut labore et dolore
-						magna aliqua.
-					</p>
+					<p class="mt-2 text-gray-700"><%= review.content %></p>
 				</div>
 			</div>
-			<!-- Add more reviews as needed -->
+			<% }) %>
 		</div>
+		<% } %>
 	</div>
 </div>
 
 <!-- added by nurleena -->
 <!-- JavaScript to handle the like button click -->
 <script>
-    document.getElementById('likeButton').addEventListener('click', function() {
-        const productId = this.getAttribute('data-product-id');
+	document
+		.getElementById("likeButton")
+		.addEventListener("click", function () {
+			const productId = this.getAttribute("data-product-id");
 
-        fetch('/market/like/' + productId, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            credentials: 'same-origin'
-        })
-        .then(response => {
-            // Check if the response is JSON
-            if (response.headers.get('content-type')?.includes('application/json')) {
-                return response.json();
-            } else {
-                throw new Error('Not JSON response');
-            }
-        })
-        .then(data => {
-            if (data && data.error) {
-                // Handle error responses
-                if (data.error === "Sign in before liking.") {
-                    alert(data.error);
-                    window.location.href = '/login'; // Redirect to login page
-                } else {
-                    alert(data.error);
-                }
-            } else if (data && data.message) {
-                // Handle success responses
-                alert(data.message);
-            } else {
-                alert('Unexpected response format.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while liking the product.');
-        });
-    });
+			fetch("/market/like/" + productId, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"X-Requested-With": "XMLHttpRequest",
+				},
+				credentials: "same-origin",
+			})
+				.then((response) => {
+					// Check if the response is JSON
+					if (
+						response.headers
+							.get("content-type")
+							?.includes("application/json")
+					) {
+						return response.json();
+					} else {
+						throw new Error("Not JSON response");
+					}
+				})
+				.then((data) => {
+					if (data && data.error) {
+						// Handle error responses
+						if (data.error === "Sign in before liking.") {
+							alert(data.error);
+							window.location.href = "/login"; // Redirect to login page
+						} else {
+							alert(data.error);
+						}
+					} else if (data && data.message) {
+						// Handle success responses
+						alert(data.message);
+					} else {
+						alert("Unexpected response format.");
+					}
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+					alert("An error occurred while liking the product.");
+				});
+		});
 </script>
 
 <!-- JavaScript to handle the add-to-cart button click -->
 <script>
-    document.getElementById('addToCartButton').addEventListener('click', function() {
-        const productId = this.getAttribute('data-product-id');
-        const quantity = 1; // Default quantity
+	document
+		.getElementById("addToCartButton")
+		.addEventListener("click", function () {
+			const productId = this.getAttribute("data-product-id");
+			const quantity = 1; // Default quantity
 
-        fetch('/cart/add/' + productId, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({ quantity: quantity }),
-            credentials: 'same-origin'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                // Handle errors
-                alert(data.error);
-            } else if (data.message) {
-                // Handle success
-                if (data.message === "Product quantity updated in cart!") {
-                    alert("Product already added to cart. Quantity updated.");
-                } else {
-                    alert("Product added to cart successfully!");
-                }
-            } else {
-                alert('Unexpected response format.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while adding the product to the cart.');
-        });
-    });
+			fetch("/cart/add/" + productId, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"X-Requested-With": "XMLHttpRequest",
+				},
+				body: JSON.stringify({ quantity: quantity }),
+				credentials: "same-origin",
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (data.error) {
+						// Handle errors
+						alert(data.error);
+					} else if (data.message) {
+						// Handle success
+						if (
+							data.message === "Product quantity updated in cart!"
+						) {
+							alert(
+								"Product already added to cart. Quantity updated."
+							);
+						} else {
+							alert("Product added to cart successfully!");
+						}
+					} else {
+						alert("Unexpected response format.");
+					}
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+					alert(
+						"An error occurred while adding the product to the cart."
+					);
+				});
+		});
 </script>
 
 <!-- end -->

@@ -37,7 +37,6 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-
 // Set EJS as the template engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -70,26 +69,34 @@ global.db = new sqlite3.Database(
 						global.db.run(
 							"CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT)"
 						);
-						//Added by Rachel Chin
+						// Added by Rachel Chin
 						global.db.run(
 							`CREATE TABLE IF NOT EXISTS products 
-              (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, category TEXT, price INTEGER,
-              description TEXT, image BLOB, image_type TEXT, date_listed TIMESTAMP, user_id INTEGER,
-              FOREIGN KEY (user_id) REFERENCES users(id))`
-						); //End
+							(id INTEGER PRIMARY KEY AUTOINCREMENT, 
+							name TEXT, 
+							category TEXT, 
+							price INTEGER, 
+							description TEXT, 
+							image BLOB, 
+							image_type TEXT, 
+							date_listed TIMESTAMP, 
+							user_id INTEGER,
+							FOREIGN KEY (user_id) REFERENCES users(id))`
+						);
 
 						// Creating the likes table by nurleena
-                        global.db.run(
-                            `CREATE TABLE IF NOT EXISTS likes (
-                                id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                                user_id INTEGER, 
-                                product_id INTEGER, 
-                                FOREIGN KEY (user_id) REFERENCES users(id), 
-                                FOREIGN KEY (product_id) REFERENCES products(id),
-                                UNIQUE(user_id, product_id) -- Ensure a user can only like a product once
-                            )`
-                        );
+						global.db.run(
+							`CREATE TABLE IF NOT EXISTS likes (
+								id INTEGER PRIMARY KEY AUTOINCREMENT, 
+								user_id INTEGER, 
+								product_id INTEGER, 
+								FOREIGN KEY (user_id) REFERENCES users(id), 
+								FOREIGN KEY (product_id) REFERENCES products(id),
+								UNIQUE(user_id, product_id) -- Ensure a user can only like a product once
+							)`
+						);
 
+						// Temporary table and migration logic for likes
 						global.db.run(
 							`CREATE TABLE IF NOT EXISTS likes_temp 
 							(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, product_id INTEGER, 
@@ -98,14 +105,14 @@ global.db = new sqlite3.Database(
 						);
 
 						global.db.run(
-							`INSERT INTO likes_temp (id, user_id)
-							 SELECT id, user_id FROM likes`
+							`INSERT INTO likes_temp (id, user_id, product_id)
+							SELECT id, user_id, product_id FROM likes`
 						);
-						
+
 						global.db.run("DROP TABLE likes");
 						global.db.run("ALTER TABLE likes_temp RENAME TO likes");
 
-						// creating cart table by nurleena
+						// Creating cart table by nurleena
 						global.db.run(
 							`CREATE TABLE IF NOT EXISTS cart (
 								id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -115,18 +122,28 @@ global.db = new sqlite3.Database(
 								FOREIGN KEY (user_id) REFERENCES users(id),
 								FOREIGN KEY (product_id) REFERENCES products(id)
 							)`
-						)
+						);
 
-
-						
+						// Creating reviews table
+						global.db.run(
+							`CREATE TABLE IF NOT EXISTS reviews (
+								id INTEGER PRIMARY KEY AUTOINCREMENT,
+								product_id INTEGER,
+								user_id INTEGER,
+								rating INTEGER CHECK(rating >= 1 AND rating <= 5),
+								title TEXT,
+								content TEXT,
+								date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+								FOREIGN KEY (product_id) REFERENCES products(id),
+								FOREIGN KEY (user_id) REFERENCES users(id)
+							)`
+						);
 					});
 				}
 			});
 		}
 	}
 );
-
-
 
 // Set up nodemailer transporter (using Gmail as an example)
 const transporter = nodemailer.createTransport({
@@ -152,7 +169,9 @@ const logoutRouter = require("./routes/logout");
 const likeRouter = require("./routes/likes");
 const cartRouter = require("./routes/cart");
 //end
-
+const reportRouter = require("./routes/report");
+const contactRouter = require("./routes/contact");
+const faqRouter = require("./routes/faq");
 
 // Use routes
 app.use("/", indexRouter);
@@ -165,11 +184,13 @@ app.use("/profile", profileRouter);
 app.use("/market", marketRouter);
 //End
 app.use("/logout", logoutRouter);
+app.use("/report", reportRouter);
+app.use("/contact", contactRouter);
+app.use("/faq", faqRouter);
 // added by Nurleena Muhammad Hilmi
 app.use("/likes", likeRouter);
 app.use("/cart", cartRouter);
 //end
-
 
 // Start the server
 app.listen(PORT, () => {
