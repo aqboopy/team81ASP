@@ -37,12 +37,18 @@
 
 			<!-- Show "Add Item to Sell" button only for the logged-in user -->
 			<% if (isOwnProfile) { %>
-			<div class="flex justify-end mb-8">
+			<div class="flex justify-end my-4">
 				<a
 					href="/sell"
-					class="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition-colors"
+					class="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition-colors mx-4"
 				>
 					Add Item to Sell
+				</a>
+				<a
+					href="/logout"
+					class="bg-red-500 text-white py-2 px-6 rounded-md hover:bg-red-600 transition-colors mx-4"
+				>
+					Log Out
 				</a>
 			</div>
 			<% } %>
