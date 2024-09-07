@@ -3,7 +3,9 @@
 	<div class="bg-white shadow-md rounded-lg p-6">
 		<!-- Profile Header -->
 		<h1 class="text-4xl font-bold text-gray-800 text-center mb-8">
-			User Profile
+			<!-- Added by Rachel Chin -->
+			<%= title %>
+			<!-- end -->
 		</h1>
 
 		<!-- Profile Details -->
@@ -37,6 +39,9 @@
 
 			<!-- Show "Add Item to Sell" button only for the logged-in user -->
 			<% if (isOwnProfile) { %>
+				<!-- Added by Rachel Chin -->
+				<p class="text-l font-bold">Points Earned: <%= user.points %></p>
+				<!-- end -->
 			<div class="flex justify-end my-4">
 				<a
 					href="/sell"
