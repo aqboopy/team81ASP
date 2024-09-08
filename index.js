@@ -44,6 +44,10 @@ app.set("views", path.join(__dirname, "views"));
 // Middleware to serve static files
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+//Added by Rachel Chin
+// Serve static files in the Img folder
+app.use('/img', express.static(path.join(__dirname, 'img')));
+//end
 
 // Database setup
 global.db = new sqlite3.Database(
@@ -67,7 +71,7 @@ global.db = new sqlite3.Database(
 					// Create tables if they do not exist
 					global.db.serialize(() => {
 						global.db.run(
-							"CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, points INTEGER)"
+							"CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, points INTEGER DEFAULT 0)"
 						);
 						// Added by Rachel Chin
 						global.db.run(
