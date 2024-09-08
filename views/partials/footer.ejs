@@ -1,25 +1,65 @@
-<footer class="bg-yellow-200 p-4 mt-2">
+<footer class="bg-yellow-200 p-4 mt-2" id="footer">
 	<div class="container mx-auto text-center">
 		<p class="text-gray-700">
-			&copy; Our Project Name. All rights reserved.
+			&copy; Team 81 ASP | All rights reserved.
 		</p>
+		<!-- By Nyan lin aung -->
 
-		<!-- Add FAQs and Contact Us links here -->
-		<div class="mt-4">
+		<!-- FAQs and Contact Us links -->
+		<div class="mt-1">
 			<a href="/faq" class="text-gray-700 hover:text-gray-900 mx-2">FAQs</a>
 			<a href="/contact" class="text-gray-700 hover:text-gray-900 mx-2">Contact Us</a>
 		</div>
 
-		<div class="mt-4">
-      <a href="#" class="text-gray-700 hover:text-gray-900 mx-2">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="#" class="text-gray-700 hover:text-gray-900 mx-2">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="#" class="text-gray-700 hover:text-gray-900 mx-2">
-        <i class="fab fa-instagram"></i>
-      </a>
-    </div>
+		<div class="mt-1">
+			<a href="#" class="text-gray-700 hover:text-gray-900 mx-2">
+				<i class="fab fa-facebook-f"></i>
+			</a>
+			<a href="#" class="text-gray-700 hover:text-gray-900 mx-2">
+				<i class="fab fa-twitter"></i>
+			</a>
+			<a href="#" class="text-gray-700 hover:text-gray-900 mx-2">
+				<i class="fab fa-instagram"></i>
+			</a>
+		</div>
 	</div>
+
+	<!-- By Nurleena -->
+	<style>
+		/* CSS specific to the footer */
+		#footer {
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			transition: transform 0.3s ease-in-out;
+			z-index: 10; /* Keeps the footer on top of other content */
+		}
+
+		/* Class to hide the footer */
+		.footer-hidden {
+			transform: translateY(100%); /* Moves footer completely out of view */
+		}
+	</style>
+
+	<script>
+		// JavaScript to handle scroll and show/hide the footer
+		let lastScrollTop = 0;
+		const footer = document.getElementById("footer");
+
+		window.addEventListener("scroll", function () {
+			const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+			// Scroll down - hide the footer
+			if (scrollTop > lastScrollTop) {
+				footer.classList.add("footer-hidden");
+			} 
+			// Scroll up - show the footer
+			else {
+				footer.classList.remove("footer-hidden");
+			}
+
+			// Update last scroll position
+			lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+		});
+	</script>
 </footer>

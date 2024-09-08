@@ -1,6 +1,4 @@
 // author: nurleena muhammad hilmi
-// filename: cart.js
-// description: 
 
 const express = require("express");
 const router = express.Router();

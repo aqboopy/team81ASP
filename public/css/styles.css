@@ -1041,6 +1041,25 @@ video {
      object-fit: cover;
 }
 
+  /* Sticky Header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensures the header stays on top of content */
+  }
+  
+  /* Make sure body takes full height of the screen */
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Main content should grow to fill space between header and footer */
+  main {
+    flex-grow: 1;
+  }
+
 .p-2 {
   padding: 0.5rem;
 }

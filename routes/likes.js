@@ -1,7 +1,5 @@
 /*
 author: nurleena muhammad hilmi
-filename: likes.js
-description: 
 */
 
 const express = require("express");
