@@ -24,42 +24,41 @@
 		</div>
 	</div>
 
-	<!-- By Nurleena -->
 	<style>
-		/* CSS specific to the footer */
-		#footer {
-			position: fixed;
-			bottom: 0;
-			width: 100%;
-			transition: transform 0.3s ease-in-out;
-			z-index: 10; /* Keeps the footer on top of other content */
-		}
+    /* CSS specific to the footer */
+    #footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      transition: transform 0.3s ease-in-out;
+      z-index: 10; /* Keeps the footer on top of other content */
+    }
 
-		/* Class to hide the footer */
-		.footer-hidden {
-			transform: translateY(100%); /* Moves footer completely out of view */
-		}
-	</style>
+    /* Class to hide the footer */
+    .footer-hidden {
+      transform: translateY(100%); /* Moves footer completely out of view */
+    }
+  </style>
 
-	<script>
-		// JavaScript to handle scroll and show/hide the footer
-		let lastScrollTop = 0;
-		const footer = document.getElementById("footer");
+  <script>
+    const footer = document.getElementById("footer");
+    let lastScrollTop = 0;
 
-		window.addEventListener("scroll", function () {
-			const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    window.addEventListener("scroll", function () {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
 
-			// Scroll down - hide the footer
-			if (scrollTop > lastScrollTop) {
-				footer.classList.add("footer-hidden");
-			} 
-			// Scroll up - show the footer
-			else {
-				footer.classList.remove("footer-hidden");
-			}
+      // If scrolling down, show the footer
+      if (scrollTop > lastScrollTop) {
+        footer.classList.remove("footer-hidden"); // Show the footer
+      }
+      // If scrolling up, hide the footer
+      else {
+        footer.classList.add("footer-hidden"); // Hide the footer
+      }
 
-			// Update last scroll position
-			lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-		});
-	</script>
+      // Update last scroll position
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+  </script>
 </footer>
