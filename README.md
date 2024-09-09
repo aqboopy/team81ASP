@@ -1,20 +1,27 @@
-# team81ASP
+# Team 81
+### CM2020 Agile Software Projects ###
 
-Routes to create for the website
-- Home page
-- Generalized product Market Page
-- Product Listing Page
-- Product Market page x 3 (More specified pages, if you see in our prototypes from the midterm report)
-- Cart
-- Likes
-- Login page
-- retirieve password page
-- register page
-- Profile page (seller)
-- upload product to sell page
-- public profile page (buyer looking at seller page)
-- report issue
-- contact us
-- help/faq page
-
+## Libraries/Dependencies:
+    1.Tailwind CSS
+    2.Express
+    3.Express-Validator
+    4.Body-Parser
+    5.Crypto
+    6.Multer
+    7.Nodemailer
+    8.sqlite3
+    
+## Instructions:
+ * Run the command ```npm install```
+ * Run the command ```node index.js```
+ * Test the app by browsing to the following routes:
+    - http://localhost:3000
+    
+## Account login for testing:
+ ### Account 1:
+    Email: test@test.com
+    Password: test
+ ### Account 2:
+    Email: admin@admin.com
+    Password: admin
   
