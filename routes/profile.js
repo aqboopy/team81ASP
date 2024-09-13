@@ -49,15 +49,26 @@ router.get("/:id?", ensureLoggedIn, (req, res) => {
 					console.error("Error fetching reviews:", err.message);
 					return res.status(500).send("Internal server error.");
 				}
-
-				// Render the profile page with the fetched data
-				res.render("profile", {
-					title: user.username + "'s Profile",
-					user: user,
-					listings: listings,
-					reviews: reviews,
-					isOwnProfile: !req.params.id, // Check if this is the logged-in user's profile
-				});
+				
+				//Added by Rachel Chin
+				//Fetch redeemed rewards for this user
+				let sqlQuery = `SELECT rr.rewardName FROM redeemed rr JOIN rewards r ON rr.reward_id=r.id
+								WHERE rr.user_id= ?`;
+				global.db.all(sqlQuery,[userId],(err,redeemedRewards)=>{
+					if (err) {
+						console.error("Error fetching redeemed rewards:", err.message);
+						return res.status(500).send("Internal server error.");
+					}
+					// Render the profile page with the fetched data
+					res.render("profile", {
+						title: user.username + "'s Profile",
+						user: user,
+						listings: listings,
+						reviews: reviews,
+						isOwnProfile: !req.params.id, // Check if this is the logged-in user's profile
+						redeemedRewards: redeemedRewards,//added by Rachel Chin
+					});
+				});			
 			});
 		});
 	});

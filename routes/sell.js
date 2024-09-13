@@ -68,6 +68,6 @@ router.post("/",upload.single('image'), sellValidationRules(),(req,res)=>{
 });
 
 router.get("/",(req,res)=>{
-    res.render("sell",{title: "Sell Product"})
+    res.render("sell",{title: "Sell Product"});
 });
 module.exports = router;

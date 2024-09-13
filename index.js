@@ -86,6 +86,21 @@ global.db = new sqlite3.Database(
 							FOREIGN KEY (user_id) REFERENCES users(id))`
 						);
 
+						global.db.run(
+							`CREATE TABLE IF NOT EXISTS rewards (id INTEGER PRIMARY KEY AUTOINCREMENT,
+							costPoints INTEGER,
+							rewardName TEXT)`
+						);
+
+						global.db.run(
+							`CREATE TABLE IF NOT EXISTS redeemed (id INTEGER PRIMARY KEY AUTOINCREMENT,
+							user_id INTEGER,
+							reward_id INTEGER,
+							FOREIGN KEY (user_id) REFERENCES users(id),
+							FOREIGN KEY (reward_id) REFERENCES rewards(id))`
+						)
+						//end
+
 						// Creating the likes table by nurleena
 						global.db.run(
 							`CREATE TABLE IF NOT EXISTS likes (
@@ -165,6 +180,7 @@ const registerRouter = require("./routes/register");
 const sellRouter = require("./routes/sell");
 const profileRouter = require("./routes/profile");
 const marketRouter = require("./routes/market");
+const rewardRouter = require("./routes/reward");
 //End
 const logoutRouter = require("./routes/logout");
 // added by Nurleena Muhammad Hilmi
@@ -184,6 +200,7 @@ app.use("/register", registerRouter);
 app.use("/sell", sellRouter);
 app.use("/profile", profileRouter);
 app.use("/market", marketRouter);
+app.use("/reward",rewardRouter);
 //End
 app.use("/logout", logoutRouter);
 app.use("/report", reportRouter);

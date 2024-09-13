@@ -1,0 +1,32 @@
+<!-- 
+author: Rachel Chin
+filename: reward.ejs
+description: This is the view page for user to redeem rewards using their earned points. 
+-->
+
+<!-- Redeem Points Page -->
+<section class="mb-16">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Redeem Points</h2>
+    <a
+					href="/profile"
+					class="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition-colors mx-4"
+				>
+					Back to Profile
+				</a>
+    <% if (typeof alert != 'undefined') { %>
+		<p class="text-red-500 text-center"><%= alert.message %></p>
+		<% } %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <% if(rewards){ rewards.forEach(function(reward){ %>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <p><%= reward.rewardName %></p>
+            <p>Cost: <%= reward.costPoints %></p>
+            <a 
+					href="/reward/redeem/<%= reward.id %>"
+					class="bg-green-500 text-white py-2 px-6 rounded-md hover:bg-green-600 transition-colors mx-4">
+						Redeem
+				</a>
+        </div>
+        <% }) }%>
+    </div>
+</section>

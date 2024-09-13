@@ -61,6 +61,7 @@ router.post("/", loginValidationRules(), (req, res) => {
 			id: result.id,
 			username: result.username, // Assuming your users table has a 'name' column
 			email: result.email,
+			points: result.points
 		};
 
 		// Redirect to the homepage

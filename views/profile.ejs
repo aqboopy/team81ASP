@@ -41,6 +41,11 @@
 			<% if (isOwnProfile) { %>
 				<!-- Added by Rachel Chin -->
 				<p class="text-l font-bold">Points Earned: <%= user.points %></p>
+				<a 
+					href="/reward"
+					class="bg-green-500 text-white py-2 px-6 rounded-md hover:bg-green-600 transition-colors mx-4">
+						Redeem Points
+				</a>
 				<!-- end -->
 			<div class="flex justify-end my-4">
 				<a
@@ -56,6 +61,16 @@
 					Log Out
 				</a>
 			</div>
+			<!-- Added by Rachel Chin -->
+			<div>
+				<p>Redeemed Rewards: </p>
+				<% if(redeemedRewards){ redeemedRewards.forEach(redeemed => {  %>
+					<div>
+						<p><%= redeemed.rewardName%></p>
+					</div>
+				<%})}%>
+			</div>
+			<!-- end -->
 			<% } %>
 		</div>
 
