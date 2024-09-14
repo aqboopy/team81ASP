@@ -52,7 +52,7 @@ router.get("/:id?", ensureLoggedIn, (req, res) => {
 				
 				//Added by Rachel Chin
 				//Fetch redeemed rewards for this user
-				let sqlQuery = `SELECT rr.rewardName FROM redeemed rr JOIN rewards r ON rr.reward_id=r.id
+				let sqlQuery = `SELECT * FROM redeemed rr JOIN rewards r ON rr.reward_id=r.id
 								WHERE rr.user_id= ?`;
 				global.db.all(sqlQuery,[userId],(err,redeemedRewards)=>{
 					if (err) {
