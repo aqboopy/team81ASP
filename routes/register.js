@@ -20,8 +20,8 @@ const registerValidationRules = ()=>{
         check("password","Please input your password!")
             .notEmpty()
             .bail()//stop validation if field is empty
-            .matches(/[!@#$%^&*(),.?":{}|<>]/, "g")
-            .withMessage("Password must contain at least one symbol!"),
+            .matches(/^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d).+$/, "g")
+            .withMessage("Password must contain at least one symbol and one number!"),
     ];
 };
 //render register page
