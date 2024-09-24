@@ -11,11 +11,17 @@ const {check, validationResult} = require('express-validator');
 const registerValidationRules = ()=>{
     return[
         check("username","Please input your name!")
-            .isLength({min:1,max:50}),
+            .notEmpty(),
         check("email","Please input your email!")
-            .isEmail(),
+            .notEmpty()
+            .bail()//stop validation if field is empty
+            .isEmail()
+            .withMessage("Please enter a valid email!"),
         check("password","Please input your password!")
-            .isLength({min:1,max:50})
+            .notEmpty()
+            .bail()//stop validation if field is empty
+            .matches(/[!@#$%^&*(),.?":{}|<>]/, "g")
+            .withMessage("Password must contain at least one symbol!"),
     ];
 };
 //render register page

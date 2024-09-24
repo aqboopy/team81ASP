@@ -11,11 +11,13 @@ const { check, validationResult } = require("express-validator");
 // Login validation rules
 const loginValidationRules = () => {
 	return [
-		check("email", "Please input your email!").isEmail(),
-		check("password", "Please input your password!").isLength({
-			min: 1,
-			max: 50,
-		}),
+		check("email", "Please input your email!")
+			.notEmpty()
+			.bail() //stop validation if field is empty
+			.isEmail()
+			.withMessage("Please enter a valid email!"),
+		check("password", "Please input your password!")
+			.notEmpty(),
 	];
 };
 
