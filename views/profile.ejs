@@ -61,19 +61,20 @@
 					Log Out
 				</a>
 			</div>
-			<!-- Added by Rachel Chin -->
+			<% } %>
+		</div>
+		<!-- Added by Rachel Chin -->
+		<% if(isOwnProfile){%>
 			<div>
 				<p>Redeemed Rewards: </p>
 				<% if(redeemedRewards){ redeemedRewards.forEach(redeemed => {  %>
-					<div>
+					<div class="flex">
 						<p><%= redeemed.rewardName%></p>
 					</div>
 				<%})}%>
 			</div>
-			<!-- end -->
-			<% } %>
-		</div>
-
+		<% } %>
+		<!-- end -->
 		<!-- Listings Section -->
 		<h2 class="text-2xl font-bold mb-4">Listings:</h2>
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">

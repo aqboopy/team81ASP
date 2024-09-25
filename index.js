@@ -89,7 +89,8 @@ global.db = new sqlite3.Database(
 						global.db.run(
 							`CREATE TABLE IF NOT EXISTS rewards (id INTEGER PRIMARY KEY AUTOINCREMENT,
 							costPoints INTEGER,
-							rewardName TEXT)`
+							rewardName TEXT,
+							value REAL)`
 						);
 
 						global.db.run(
