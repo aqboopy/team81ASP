@@ -157,6 +157,33 @@ router.get("/listing/:id", (req, res) => {
 	});
 });
 
+router.post("/search",(req,res)=>{
+	const searchInput = req.body.search;
+	const searchTerm = `%${searchInput}%`;
+	var failAlert = null;
+	let sqlQuery = "SELECT * FROM PRODUCTS WHERE name LIKE ?";
+	global.db.all(sqlQuery,[searchTerm],(err,products)=>{
+		if(err){
+			console.error("Database error (products):", err.message);
+			return res.status(500).send("Internal server error.");
+		}
+
+		if(products.length > 0){
+			// Convert BLOB data to base64 for each product
+			products.forEach((product) => {
+				if (product.image) {
+					product.image = Buffer.from(product.image).toString("base64");
+				}
+			});
+		}
+		else{
+			failAlert = { message: "No results found. Please ensure there are no misspellings." };
+		}
+		
+		res.render("searchResult",{searchresult: products, title: "Search Results", failAlert: failAlert});
+	});
+});
+
 //added by nurleena
 // Route to handle liking a product
 router.post("/like/:productId", authMiddleware, (req, res) => {

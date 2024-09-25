@@ -1,11 +1,15 @@
 <!-- Search Bar -->
 <div class="flex justify-center my-8">
-	<input
-		type="text"
-		placeholder="Search"
-		class="border border-gray-300 p-2 rounded-l-md"
-	/>
-	<button class="bg-blue-500 text-white p-2 rounded-r-md">Go!</button>
+	<form action="/market/search" method="POST">
+		<input
+			type="text"
+			placeholder="Search"
+			name="search"
+			class="border border-gray-300 p-2 rounded-l-md"
+		/>
+		<input type="submit" class="bg-blue-500 text-white p-2 rounded-r-md" value="Go!">
+	</form>
+	
 </div>
 
 <!-- Carousel -->
