@@ -1384,3 +1384,10 @@ video {
     flex-direction: row;
   }
 }
+
+/* Error message styling */
+.error-message {
+  color: red;
+  font-size: 0.875rem; /* Adjust as necessary */
+  margin-bottom: 1rem;
+}
