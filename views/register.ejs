@@ -1,3 +1,8 @@
+<!-- 
+author: Rachel Chin
+filename: register.ejs
+description: This is the view page for user to register an account. 
+-->
 <!-- Register Page -->
 <div class="flex items-center justify-center mt-10">
   <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
@@ -19,6 +24,7 @@
     <form action="/register" method="POST" class="space-y-4">
       <div>
         <label for="username" class="block text-gray-700">Name:</label>
+        <!-- Modified by Penda -->
         <input
           type="text"
           name="username"
@@ -26,10 +32,12 @@
           class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
           value="<%= typeof username !== 'undefined' ? username : '' %>"
         />
+        <!-- End -->
       </div>
 
       <div>
         <label for="email" class="block text-gray-700">Email:</label>
+        <!-- Modified by Penda -->
         <input
           type="email"
           name="email"
@@ -37,10 +45,13 @@
           class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
           value="<%= typeof email !== 'undefined' ? email : '' %>"
         />
+        <!-- End -->
       </div>
 
       <div>
+        <!-- Modified by Penda -->
         <label for="password" class="block text-gray-700">Password:</label>
+        <!-- End -->
         <input
           type="password"
           name="password"

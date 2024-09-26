@@ -1,3 +1,8 @@
+/*
+author: Rachel Chin
+filename: register.js
+description: This is to handle the request and response for register user
+*/
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
@@ -30,8 +35,12 @@ router.post("/", registerValidationRules(), (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const alert = errors.array();
+
+    //Added by Penda
     // Re-render the form with the previous values for username and email
     res.render("register", { alert, title: "Register", username, email });
+    //End
+    
   } else {
     let insertQuery =
       "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
