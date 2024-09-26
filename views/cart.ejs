@@ -76,7 +76,8 @@
             <!-- Added by Rachel Chin -->
                 <label for="reward">Apply Voucher:</label>
                 <select name="voucher" id="voucher-select">
-                    <option value="" disabled selected>Select a voucher...</option>
+                    <option disabled selected>Select a voucher...</option>
+                    <option data-discount="0">Don't Use Voucher</option>
                     <% if(availVouchers){ availVouchers.forEach(voucher => { %>
                         <option value="<%= voucher.id %>" data-discount="<%= voucher.value %>"><%= voucher.rewardName %></option>
                     <% });} %>
