@@ -12,6 +12,7 @@
     8.sqlite3
     
 ## Instructions:
+ * Open the terminal in Visual Studio Code
  * Run the command ```npm install```
  * Run the command ```node index.js```
  * Test the app by browsing to the following routes:
