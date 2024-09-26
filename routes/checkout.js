@@ -63,7 +63,7 @@ router.post("/", checkoutValidationRules(), (req, res) => {
 			    return res.status(500).send("Internal server error.");
         }
       });
-      console.log(voucherID);
+
       //check if there is a selected voucher
       if(voucherID){
         
