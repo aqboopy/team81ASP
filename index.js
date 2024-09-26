@@ -191,6 +191,7 @@ const cartRouter = require("./routes/cart");
 const reportRouter = require("./routes/report");
 const contactRouter = require("./routes/contact");
 const faqRouter = require("./routes/faq");
+const checkoutRouter = require("./routes/checkout");
 
 // Use routes
 app.use("/", indexRouter);
@@ -211,6 +212,7 @@ app.use("/faq", faqRouter);
 app.use("/likes", likeRouter);
 app.use("/cart", cartRouter);
 //end
+app.use("/checkout", checkoutRouter);
 
 // Start the server
 app.listen(PORT, () => {

@@ -1,0 +1,81 @@
+<!-- Register Page -->
+<div class="flex items-center justify-center mt-10">
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+      <h1 class="text-2xl font-bold mb-6 text-center"><%= title %></h1>  
+      <!-- Display validation errors -->
+      <% if (typeof alert != 'undefined') { %> <% alert.forEach(function(error) {
+      %>
+      <div class="error-message"><%= error.msg %></div>
+      <% }) %> <% } %>
+    
+      <form action="#" method="POST" class="space-y-4">
+        <div>
+          <label for="firstName" class="block text-gray-700">First Name (as shown on card):</label>
+          <input
+            type="text"
+            name="firstName"
+            id="firstName"
+            class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          />
+        </div>
+
+        <div>
+            <label for="lastName" class="block text-gray-700">Last Name (as shown on card):</label>
+            <input
+              type="text"
+              name="lastName"
+              id="lastName"
+              class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            />
+          </div>
+  
+        <div>
+          <label for="creditNumber" class="block text-gray-700">Card Number (without spacing):</label>
+          <input
+            type="text"
+            name="creditNumber"
+            id="creditNumber"
+            class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          />
+        </div>
+  
+        <div>
+          <label for="cvv" class="block text-gray-700">CVV:</label>
+          <input
+            type="text"
+            name="cvv"
+            id="cvv"
+            class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          />
+        </div>
+
+        <div>
+            <label for="expiryMonth" class="block text-gray-700">Expiry (month):</label>
+            <input
+              type="number"
+              name="expiryMonth"
+              id="expiryMonth"
+              min="1" max="12"
+              class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            />
+          </div>
+
+          <div>
+            <label for="expiryYear" class="block text-gray-700">Expiry (year):</label>
+            <input
+              type="number"
+              name="expiryYear"
+              id="expiryYear"
+              min="24" max="99"
+              class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            />
+          </div>
+  
+        <input
+          type="submit"
+          value="Confirm"
+          class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
+        />
+      </form>
+    </div>
+  </div>
