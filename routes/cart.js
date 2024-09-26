@@ -106,27 +106,41 @@ router.get("/", authMiddleware, (req, res) => {
 			return res.status(500).send("Internal server error.");
 		}
 
-		// Convert BLOB data to Base64 for each cart item
-		cartItems.forEach((item) => {
-			if (item.image) {
-				item.image = Buffer.from(item.image).toString("base64");
+		// Added by Rachel Chin
+		const voucherQuery = `SELECT r.id, rr.rewardName, rr.value
+								FROM redeemed r JOIN rewards rr ON r.reward_id = rr.id 
+								WHERE r.user_id = ?`;
+		global.db.all(voucherQuery,[userId],(err,vouchers)=>{
+			if(err){
+				console.error(err.message);
+				return res.status(500).send("Internal server error.");
 			}
-		});
+			// End
 
-		// Calculate total price
-		const totalPrice = cartItems.reduce((total, item) => {
-			return total + item.price * item.quantity;
-		}, 0);
+			// Convert BLOB data to Base64 for each cart item
+			cartItems.forEach((item) => {
+				if (item.image) {
+					item.image = Buffer.from(item.image).toString("base64");
+				}
+			});
 
-		// Pass the update status and total price to the template
-		const updateStatus = req.query.update || "";
+			// Calculate total price
+			const totalPrice = cartItems.reduce((total, item) => {
+				return total + item.price * item.quantity;
+			}, 0);
 
-		res.render("cart", {
-			title: "Your Cart",
-			cartItems: cartItems,
-			updateStatus: updateStatus,
-			totalPrice: totalPrice,
-		});
+			// Pass the update status and total price to the template
+			const updateStatus = req.query.update || "";
+
+			res.render("cart", {
+				title: "Your Cart",
+				cartItems: cartItems,
+				updateStatus: updateStatus,
+				totalPrice: totalPrice,
+				availVouchers: vouchers //added by Rachel Chin
+			});
+			
+		});	
 	});
 });
 

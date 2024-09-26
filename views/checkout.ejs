@@ -1,4 +1,4 @@
-<!-- Register Page -->
+<!-- Checkout Page -->
 <div class="flex items-center justify-center mt-10">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
       <h1 class="text-2xl font-bold mb-6 text-center"><%= title %></h1>  
@@ -8,7 +8,7 @@
       <div class="error-message"><%= error.msg %></div>
       <% }) %> <% } %>
     
-      <form action="#" method="POST" class="space-y-4">
+      <form action="/checkout" method="POST" class="space-y-4">
         <div>
           <label for="firstName" class="block text-gray-700">First Name (as shown on card):</label>
           <input

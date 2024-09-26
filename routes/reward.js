@@ -46,8 +46,7 @@ router.get("/redeem/:id",(req,res)=>{
                         console.log(err);
                         return res.status(500).send("Internal server error.");
                     }
-                    const alert = { message: "Points redeemed!" };
-                    res.render("reward",{title: "Redeem Points",rewards: req.session.rewards, alert: alert});
+                    res.redirect("/profile");
                 });
             }); 
         }

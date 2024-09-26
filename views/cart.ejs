@@ -68,11 +68,20 @@
     <!-- Display total price -->
     <div class="mt-6" style="text-align: right;">
         <h2 class="text-xl font-semibold text-gray-800">Total Price:</h2>
-        <p class="text-lg text-gray-700">$<%= totalPrice.toFixed(2) %></p>
+        <p class="text-lg text-gray-700" id="total-price">$<%= totalPrice.toFixed(2) %></p>
     </div>
 
     <!-- Checkout button -->
-    <form action="/checkout" method="post" style="text-align: right; margin-top: 2%;">
+    <form action="/checkout/pay" method="post" style="text-align: right; margin-top: 2%;">
+            <!-- Added by Rachel Chin -->
+                <label for="reward">Apply Voucher:</label>
+                <select name="voucher" id="voucher-select">
+                    <option value="" disabled selected>Select a voucher...</option>
+                    <% if(availVouchers){ availVouchers.forEach(voucher => { %>
+                        <option value="<%= voucher.id %>" data-discount="<%= voucher.value %>"><%= voucher.rewardName %></option>
+                    <% });} %>
+                </select>
+            <!-- End -->
         <button
             type="submit"
             style="background-color: #28a745; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;"
@@ -80,6 +89,7 @@
             Checkout
         </button>
     </form>
+
 </div>
 
 
@@ -173,4 +183,23 @@
             }
         }
     });
+
+    // Added by Rachel Chin
+    const totalPriceElement = document.getElementById('total-price');
+    const voucherSelect = document.getElementById('voucher-select');
+    const originalPrice = `<%- totalPrice %>`; // Pass the EJS variable safely
+
+    voucherSelect.addEventListener('change', function() {
+        const selectedOption = voucherSelect.options[voucherSelect.selectedIndex];
+
+        // Get the discount value from the selected option's data attribute
+        const discount = selectedOption.dataset.discount ? parseFloat(selectedOption.dataset.discount) : 0;
+
+        // Calculate the new total price
+        const newTotalPrice = originalPrice - discount;
+
+        // Update the displayed total price
+        totalPriceElement.textContent = `$${newTotalPrice.toFixed(2)}`;
+    });
+    //end
 </script>

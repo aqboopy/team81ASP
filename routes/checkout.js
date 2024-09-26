@@ -27,10 +27,21 @@ const checkoutValidationRules = () => {
 
 router.get("/", (req, res) => res.render('checkout', {title: "Checkout"}));
 
+//added by Rachel Chin
+router.post("/pay",(req,res)=>{
+  const voucherID = req.body.voucher;
+  if(voucherID){
+    req.session.voucherId = voucherID;
+  }
+  res.render('checkout', {title: "Checkout"});
+});
+//End
+
 router.post("/", checkoutValidationRules(), (req, res) => {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const creditNumber = req.body.creditNumber;
+    const voucherID = req.session.voucherId; // added by Rachel Chin
     const cvv = req.body.cvv;
     let success = false;
 
@@ -40,9 +51,33 @@ router.post("/", checkoutValidationRules(), (req, res) => {
       // Re-render the form with the previous values for username and email
       res.render('checkout', { alert, title: "Checkout", firstName, lastName, creditNumber, cvv });
     } else {
-        res.status(200).json({
-            message: "Product purchased successfully!",
+
+      // Added by Rachel Chin
+      const userID = req.session.userdata.id;
+      
+      //remove items from cart db
+      const deleteCartQuery = "DELETE FROM cart WHERE user_id=?";
+      global.db.run(deleteCartQuery,[userID],(err)=>{
+        if(err){
+          console.log(err);
+			    return res.status(500).send("Internal server error.");
+        }
+      });
+      console.log(voucherID);
+      //check if there is a selected voucher
+      if(voucherID){
+        
+        //remove the applied voucher from db
+        const deleteVoucherQuery = "DELETE FROM redeemed WHERE id=?";
+        global.db.run(deleteVoucherQuery,[voucherID],(err)=>{
+          if(err){
+            console.log(err);
+			      return res.status(500).send("Internal server error.");
+          }
         });
+      }
+      res.redirect("/market");
+      //end
     }
   });
 
