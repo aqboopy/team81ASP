@@ -4,8 +4,8 @@ const { check, validationResult } = require("express-validator");
 
 const checkoutValidationRules = () => {
     return [
-      check("firstName", "Please input your name!").notEmpty(),
-      check("lastName", "Please input your name!").notEmpty(),
+      check("firstName", "Please input your first name!").notEmpty(),
+      check("lastName", "Please input your last name!").notEmpty(),
       check("creditNumber", "Card number must be 16 digits long")
         .isNumeric()
         .isLength({ min: 16, max:16 })
@@ -32,12 +32,13 @@ router.post("/", checkoutValidationRules(), (req, res) => {
     const lastName = req.body.lastName;
     const creditNumber = req.body.creditNumber;
     const cvv = req.body.cvv;
+    let success = false;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const alert = errors.array();
       // Re-render the form with the previous values for username and email
-      res.render('checkout', { alert, title: "Check Out", firstName, lastName, creditNumber, cvv });
+      res.render('checkout', { alert, title: "Checkout", firstName, lastName, creditNumber, cvv });
     } else {
         res.status(200).json({
             message: "Product purchased successfully!",
