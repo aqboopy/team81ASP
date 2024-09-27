@@ -1,3 +1,8 @@
+<!-- 
+author: Rachel Chin, Nurleena Muhammad Hilmi
+filename: listing.ejs
+description: This is the view page to display the product information. 
+-->
 <!-- Product Listing Page (Buyer POV) -->
 <div class="max-w-7xl mx-auto p-6">
 	<!-- Search Bar -->
@@ -14,6 +19,7 @@
 		</button>
 	</div>
 
+	<!-- Added by Rachel Chin -->
 	<!-- Product Section -->
 	<div class="flex flex-col lg:flex-row my-8">
 		<!-- Product Image -->
@@ -61,7 +67,8 @@
 				<%= product.username %>
 			</a>
 		</h3>
-
+		<!-- End -->
+		 
 		<!-- Report Button (only if logged-in user is not the seller) -->
 		<% if (sessionUser && product.user_id !== sessionUser.id) { %>
 		<div class="flex justify-end">
