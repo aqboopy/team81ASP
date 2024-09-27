@@ -43,7 +43,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // Middleware to serve static files
 app.use(express.static("database/images"));
-app.use(express.static("views"));  // Allows serving static files like images from the same directory
+app.use(express.static("views")); // Allows serving static files like images from the same directory
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
@@ -99,7 +99,7 @@ global.db = new sqlite3.Database(
 							reward_id INTEGER,
 							FOREIGN KEY (user_id) REFERENCES users(id),
 							FOREIGN KEY (reward_id) REFERENCES rewards(id))`
-						)
+						);
 						//end
 
 						// Creating the likes table by nurleena
@@ -202,7 +202,7 @@ app.use("/register", registerRouter);
 app.use("/sell", sellRouter);
 app.use("/profile", profileRouter);
 app.use("/market", marketRouter);
-app.use("/reward",rewardRouter);
+app.use("/reward", rewardRouter);
 //End
 app.use("/logout", logoutRouter);
 app.use("/report", reportRouter);
@@ -215,6 +215,12 @@ app.use("/cart", cartRouter);
 app.use("/checkout", checkoutRouter);
 
 // Start the server
-app.listen(PORT, () => {
-	console.log(`Server is running on http://localhost:${PORT}`);
-});
+
+if (process.env.NODE_ENV !== "test") {
+	const port = process.env.PORT || 3000;
+	app.listen(port, () => {
+		console.log(`Server is running on http://localhost:${port}`);
+	});
+}
+
+module.exports = app;
