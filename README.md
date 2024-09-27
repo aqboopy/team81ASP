@@ -10,6 +10,9 @@
     6.Multer
     7.Nodemailer
     8.sqlite3
+    9.mocha
+    10.chai
+    11.supertest
     
 ## Instructions:
  * Open the terminal in Visual Studio Code
