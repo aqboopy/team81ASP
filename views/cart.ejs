@@ -3,204 +3,291 @@
  -->
 
 <div class="max-w-7xl mx-auto p-6">
-    <h1 class="text-4xl font-bold text-gray-800 mb-6">Your Cart</h1>
+	<h1 class="text-4xl font-bold text-gray-800 mb-6">Your Cart</h1>
 
-    <!-- Notification for successful quantity update -->
-    <% if (updateStatus === 'success') { %>
-        <div id="successMessage" class="notification bg-green-500 text-white p-4 rounded-lg mb-6">
-            Quantity has been updated successfully!
-        </div>
-    <% } %>
+	<!-- Notification for successful quantity update -->
+	<% if (updateStatus === 'success') { %>
+	<div
+		id="successMessage"
+		class="notification bg-green-500 text-white p-4 rounded-lg mb-6"
+	>
+		Quantity has been updated successfully!
+	</div>
+	<% } %>
 
-    <!-- Notification for successful removal -->
-    <% if (updateStatus === 'remove-success') { %>
-        <div id="successMessage" class="notification bg-green-500 text-white p-4 rounded-lg mb-6">
-            Product has been removed from the cart successfully!
-        </div>
-    <% } %>
+	<!-- Notification for successful removal -->
+	<% if (updateStatus === 'remove-success') { %>
+	<div
+		id="successMessage"
+		class="notification bg-green-500 text-white p-4 rounded-lg mb-6"
+	>
+		Product has been removed from the cart successfully!
+	</div>
+	<% } %>
 
-    <div class="space-y-6">
-        <% cartItems.forEach(item => { %>
-            <div class="cart-item flex items-center border-b border-gray-300 pb-4 mb-4" style="position: relative; padding: 1rem; width: 100%; max-width: 800px; margin: auto;">
-                <div style="width: 50%; height: 50%; overflow: hidden; flex-shrink: 0; position: relative;">
-                    <img
-                        src="data:<%= item.image_type %>;base64,<%= item.image %>"
-                        alt="<%= item.name %>"
-                        class="object-cover"
-                        style="width: 100%; height: 100%; object-fit: cover; display: block;"
-                    />
-                </div>
-            <div class="details" style="flex: 1; margin-left: 1rem;">
-                <h2 class="text-xl font-semibold text-gray-800" style="margin-bottom: 0.5rem;"><%= item.name %></h2>
-                <p class="text-gray-700" style="margin-bottom: 1rem;">$<%= item.price %></p>
-                
-                <!-- Form to update quantity -->
-                <form action="/cart/update/<%= item.id %>" method="POST" class="update-form" style="display: flex; align-items: center; gap: 1rem;">
-                    <input
-                        type="number"
-                        name="quantity"
-                        value="<%= item.quantity %>"
-                        min="1"
-                        style="border: 1px solid #ccc; border-radius: 4px; padding: 0.5rem; width: 80px;"
-                    />
-                    <button
-                        type="submit"
-                        style="background-color: #007bff; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer;"
-                    >
-                        Update Quantity
-                    </button>
-                </form>
-                
-                <!-- Button to remove item from cart -->
-                <form action="/cart/remove/<%= item.id %>" method="post" style="display: inline;">
-                    <button
-                        type="submit"
-                        style="background: none; color: #dc3545; border: none; text-decoration: underline; cursor: pointer; margin-top: 1rem;"
-                    >
-                        Remove from Cart
-                    </button>
-                </form>
-            </div>
-        </div>
-        <% }) %>
-    </div>
+	<div class="space-y-6">
+		<% cartItems.forEach(item => { %>
+		<div
+			class="cart-item flex items-center border-b border-gray-300 pb-4 mb-4"
+			style="
+				position: relative;
+				padding: 1rem;
+				width: 100%;
+				max-width: 800px;
+				margin: auto;
+			"
+		>
+			<div
+				style="
+					width: 50%;
+					height: 50%;
+					overflow: hidden;
+					flex-shrink: 0;
+					position: relative;
+				"
+			>
+				<img
+					src="data:<%= item.image_type %>;base64,<%= item.image %>"
+					alt="<%= item.name %>"
+					class="object-cover"
+					style="
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+						display: block;
+					"
+				/>
+			</div>
+			<div class="details" style="flex: 1; margin-left: 1rem">
+				<h2
+					class="text-xl font-semibold text-gray-800"
+					style="margin-bottom: 0.5rem"
+				>
+					<%= item.name %>
+				</h2>
+				<p class="text-gray-700" style="margin-bottom: 1rem">
+					$<%= item.price %>
+				</p>
 
-    <!-- Display total price -->
-    <div class="mt-6" style="text-align: right;">
-        <h2 class="text-xl font-semibold text-gray-800">Total Price:</h2>
-        <p class="text-lg text-gray-700" id="total-price">$<%= totalPrice.toFixed(2) %></p>
-    </div>
+				<!-- Form to update quantity -->
+				<form
+					action="/cart/update/<%= item.id %>"
+					method="POST"
+					class="update-form"
+					style="display: flex; align-items: center; gap: 1rem"
+				>
+					<input
+						type="number"
+						name="quantity"
+						value="<%= item.quantity %>"
+						min="1"
+						style="
+							border: 1px solid #ccc;
+							border-radius: 4px;
+							padding: 0.5rem;
+							width: 80px;
+						"
+					/>
+					<button
+						type="submit"
+						style="
+							background-color: #007bff;
+							color: white;
+							padding: 0.5rem 1rem;
+							border: none;
+							border-radius: 4px;
+							cursor: pointer;
+						"
+					>
+						Update Quantity
+					</button>
+				</form>
 
-    <!-- Checkout button -->
-    <form action="/checkout/pay" method="post" style="text-align: right; margin-top: 2%;">
-            <!-- Added by Rachel Chin -->
-                <label for="reward">Apply Voucher:</label>
-                <select name="voucher" id="voucher-select">
-                    <option disabled selected>Select a voucher...</option>
-                    <option data-discount="0">Don't Use Voucher</option>
-                    <% if(availVouchers){ availVouchers.forEach(voucher => { %>
-                        <option value="<%= voucher.id %>" data-discount="<%= voucher.value %>"><%= voucher.rewardName %></option>
-                    <% });} %>
-                </select>
-            <!-- End -->
-        <button
-            type="submit"
-            style="background-color: #28a745; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;"
-        >
-            Checkout
-        </button>
-    </form>
+				<!-- Button to remove item from cart -->
+				<form
+					action="/cart/remove/<%= item.id %>"
+					method="post"
+					style="display: inline"
+				>
+					<button
+						type="submit"
+						style="
+							background: none;
+							color: #dc3545;
+							border: none;
+							text-decoration: underline;
+							cursor: pointer;
+							margin-top: 1rem;
+						"
+					>
+						Remove from Cart
+					</button>
+				</form>
+			</div>
+		</div>
+		<% }) %>
+	</div>
 
+	<!-- Display total price -->
+	<div class="mt-6" style="text-align: right">
+		<h2 class="text-xl font-semibold text-gray-800">Total Price:</h2>
+		<p class="text-lg text-gray-700" id="total-price">
+			$<%= totalPrice.toFixed(2) %>
+		</p>
+	</div>
+
+	<!-- Checkout button -->
+	<form
+		action="/checkout/pay"
+		method="post"
+		style="text-align: right; margin-top: 2%"
+	>
+		<!-- Added by Rachel Chin -->
+		<label for="reward">Apply Voucher:</label>
+		<select name="voucher" id="voucher-select">
+			<option disabled selected>Select a voucher...</option>
+			<option data-discount="0">Don't Use Voucher</option>
+			<% if(availVouchers){ availVouchers.forEach(voucher => { %>
+			<option
+				value="<%= voucher.id %>"
+				data-discount="<%= voucher.value %>"
+			>
+				<%= voucher.rewardName %>
+			</option>
+			<% });} %>
+		</select>
+		<!-- End -->
+		<button
+			type="submit"
+			style="
+				background-color: #28a745;
+				color: white;
+				padding: 0.5rem 1rem;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				font-size: 1rem;
+			"
+		>
+			Checkout
+		</button>
+	</form>
 </div>
 
-
 <script>
-    document.querySelectorAll('#removeFromCartButton').forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.getAttribute('data-product-id');
+	document.querySelectorAll("#removeFromCartButton").forEach((button) => {
+		button.addEventListener("click", function () {
+			const productId = this.getAttribute("data-product-id");
 
-            fetch('/market/cart/remove/' + productId, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                credentials: 'same-origin'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.error) {
-                    alert(data.error);
-                } else if (data && data.message) {
-                    alert(data.message);
-                    location.reload(); // Reload to reflect changes
-                } else {
-                    alert('Unexpected response format.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while removing the product from the cart.');
-            });
-        });
-    });
+			fetch("/market/cart/remove/" + productId, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"X-Requested-With": "XMLHttpRequest",
+				},
+				credentials: "same-origin",
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (data && data.error) {
+						alert(data.error);
+					} else if (data && data.message) {
+						alert(data.message);
+						location.reload(); // Reload to reflect changes
+					} else {
+						alert("Unexpected response format.");
+					}
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+					alert(
+						"An error occurred while removing the product from the cart."
+					);
+				});
+		});
+	});
 
-    document.querySelectorAll('#updateQuantityButton').forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.getAttribute('data-product-id');
-            const quantity = document.getElementById('quantity-' + productId).value;
+	document.querySelectorAll("#updateQuantityButton").forEach((button) => {
+		button.addEventListener("click", function () {
+			const productId = this.getAttribute("data-product-id");
+			const quantity = document.getElementById(
+				"quantity-" + productId
+			).value;
 
-            fetch('/market/cart/update/' + productId, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify({ quantity: quantity })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.error) {
-                    alert(data.error);
-                } else if (data && data.message) {
-                    alert(data.message);
-                    location.reload(); // Reload to reflect changes
-                } else {
-                    alert('Unexpected response format.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while updating the quantity.');
-            });
-        });
-    });
+			fetch("/market/cart/update/" + productId, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"X-Requested-With": "XMLHttpRequest",
+				},
+				credentials: "same-origin",
+				body: JSON.stringify({ quantity: quantity }),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (data && data.error) {
+						alert(data.error);
+					} else if (data && data.message) {
+						alert(data.message);
+						location.reload(); // Reload to reflect changes
+					} else {
+						alert("Unexpected response format.");
+					}
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+					alert("An error occurred while updating the quantity.");
+				});
+		});
+	});
 
-    // Notification for change of quantity
-    document.addEventListener('DOMContentLoaded', function() {
-        const successMessage = document.getElementById('successMessage');
-        if (successMessage) {
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 3000); // Hide after 3 seconds
-        }
-    });
+	// Notification for change of quantity
+	document.addEventListener("DOMContentLoaded", function () {
+		const successMessage = document.getElementById("successMessage");
+		if (successMessage) {
+			setTimeout(() => {
+				successMessage.style.display = "none";
+			}, 3000); // Hide after 3 seconds
+		}
+	});
 
-    // Notification for removal of item
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const updateStatus = urlParams.get('update');
+	// Notification for removal of item
+	document.addEventListener("DOMContentLoaded", (event) => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const updateStatus = urlParams.get("update");
 
-        if (updateStatus === 'remove-success') {
-            const successMessage = document.getElementById('successMessage');
-            if (successMessage) {
-                successMessage.style.display = 'block';
+		if (updateStatus === "remove-success") {
+			const successMessage = document.getElementById("successMessage");
+			if (successMessage) {
+				successMessage.style.display = "block";
 
-                // Hide the message after 3 seconds
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
-            }
-        }
-    });
+				// Hide the message after 3 seconds
+				setTimeout(() => {
+					successMessage.style.display = "none";
+				}, 3000);
+			}
+		}
+	});
 
-    // Added by Rachel Chin
-    const totalPriceElement = document.getElementById('total-price');
-    const voucherSelect = document.getElementById('voucher-select');
-    const originalPrice = `<%- totalPrice %>`; // Pass the EJS variable safely
+	// Added by Rachel Chin
+	const totalPriceElement = document.getElementById("total-price");
+	const voucherSelect = document.getElementById("voucher-select");
+	const originalPrice = `<%- totalPrice %>`; // Pass the EJS variable safely
 
-    voucherSelect.addEventListener('change', function() {
-        const selectedOption = voucherSelect.options[voucherSelect.selectedIndex];
+	voucherSelect.addEventListener("change", function () {
+		const selectedOption =
+			voucherSelect.options[voucherSelect.selectedIndex];
 
-        // Get the discount value from the selected option's data attribute
-        const discount = selectedOption.dataset.discount ? parseFloat(selectedOption.dataset.discount) : 0;
+		// Get the discount value from the selected option's data attribute
+		const discount = selectedOption.dataset.discount
+			? parseFloat(selectedOption.dataset.discount)
+			: 0;
 
-        // Calculate the new total price
-        const newTotalPrice = originalPrice - discount;
+		// Calculate the new total price
+		const newTotalPrice = originalPrice - discount;
 
-        // Update the displayed total price
-        totalPriceElement.textContent = `$${newTotalPrice.toFixed(2)}`;
-    });
-    //end
+		// Update the displayed total price
+		totalPriceElement.textContent = `$${newTotalPrice.toFixed(2)}`;
+	});
+	//end
 </script>
